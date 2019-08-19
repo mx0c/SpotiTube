@@ -40,10 +40,8 @@ namespace SpotiTube
             {
                 await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 { 
-                    String sec = this.mPlayer.Position.Seconds >= 10 ? this.mPlayer.Position.Seconds.ToString() : "0" + this.mPlayer.Position.Seconds.ToString();
-                    this.currentTime.Text = $"{this.mPlayer.Position.Minutes}:{sec}";
-                    sec = this.mPlayer.NaturalDuration.Seconds >= 10 ? this.mPlayer.NaturalDuration.Seconds.ToString() : "0" + this.mPlayer.NaturalDuration.Seconds.ToString();
-                    this.currentDuration.Text = $"{this.mPlayer.NaturalDuration.Minutes}:{sec}";
+                    this.currentTime.Text = $"{this.mPlayer.Position.Minutes}:{this.mPlayer.Position.Seconds.ToString("D2")}";
+                    this.currentDuration.Text = $"{this.mPlayer.NaturalDuration.Minutes}:{this.mPlayer.NaturalDuration.Seconds.ToString("D2")}";
                     this.timeSlider.Value = this.mPlayer.Position.TotalSeconds / (this.mPlayer.NaturalDuration.TotalSeconds / 100.0);
                 });
             }
