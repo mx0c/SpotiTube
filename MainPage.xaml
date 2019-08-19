@@ -26,7 +26,7 @@
                 <RowDefinition Height="0.5*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
                 <RowDefinition Height="0.3*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="0.75*"></RowDefinition>
                 <RowDefinition Height="0.3*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -43,7 +43,7 @@
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Background="Gray" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
+            <Border Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
                 <ScrollViewer Padding="10 10 10 10"  Name="MainViewer">
                     <GridView Name="MainListView" SelectionMode="Multiple" ItemClick="onItemClicked" IsItemClickEnabled="True">
                         <GridView.ItemTemplate>
@@ -65,11 +65,11 @@
             
             <TextBox  Name="SearchBar" KeyUp="SearchBar_KeyUp" Padding="50 5 0 0" CornerRadius="10" Margin="0 10 10 10" Grid.Column="1" Grid.ColumnSpan="9" Background="#66ACACAC" Height="40" VerticalAlignment="Top" FontSize="20"></TextBox>
             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="25" Margin="10 18 0 0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">&#xE721;</TextBlock>
-            <Button Height="50" MinWidth="50" MaxWidth="75" Content="&#xE8B1;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="30"></Button>
-            <Button Height="50" Content="&#xE8EE;" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="30"></Button>
-            <Button Height="75" Click="LeftButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="3" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button Height="75" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="3" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button Height="75" Click="RightButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="3" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Height="50" Content="&#xE8B1;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="50" Content="&#xE8EE;" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="50" Click="LeftButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="3" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="3" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Height="50" Click="RightButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="3" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
             <TextBlock Grid.Row="3" Grid.Column="8" FontFamily="Segoe MDL2 Assets" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">&#xE994;</TextBlock>
             <Slider Value="100" Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="3" ValueChanged="VolumeSlider_Changed" Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
             <Slider Maximum="100" Minimum="0" Name="TimeSlider" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
