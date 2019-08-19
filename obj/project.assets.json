@@ -599,6 +599,15 @@
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
         }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.17763/win10-arm": {
@@ -1508,6 +1517,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
+        }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
         }
       }
     },
@@ -2466,6 +2484,15 @@
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
         }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.17763/win10-arm64-aot": {
@@ -3423,6 +3450,15 @@
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
         }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.17763/win10-x64": {
@@ -4332,6 +4368,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
+        }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
         }
       }
     },
@@ -5290,6 +5335,15 @@
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
         }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.17763/win10-x86": {
@@ -6199,6 +6253,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
+        }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
         }
       }
     },
@@ -7156,6 +7219,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/YoutubeExplode.Converter.dll": {}
+        }
+      },
+      "YoutubeSearch.dll/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/YoutubeSearch.dll": {}
+        },
+        "runtime": {
+          "lib/YoutubeSearch.dll": {}
         }
       }
     }
@@ -13252,13 +13324,26 @@
         "youtubeexplode.converter.1.4.3.nupkg.sha512",
         "youtubeexplode.converter.nuspec"
       ]
+    },
+    "YoutubeSearch.dll/1.1.0": {
+      "sha512": "wBH2Iy/GNWEykrb1nvEBPKQNMSZgzKPAAhRQl1jjoJCT0N8CcDLy+4I6h6ppL9PuSB81i1fI/DJjyNvmD93B+A==",
+      "type": "package",
+      "path": "youtubesearch.dll/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/YoutubeSearch.dll",
+        "youtubesearch.dll.1.1.0.nupkg.sha512",
+        "youtubesearch.dll.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.17763": [
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.2",
       "YoutubeExplode >= 4.7.9",
-      "YoutubeExplode.Converter >= 1.4.3"
+      "YoutubeExplode.Converter >= 1.4.3",
+      "YoutubeSearch.dll >= 1.1.0"
     ]
   },
   "packageFolders": {
@@ -13309,6 +13394,10 @@
           "YoutubeExplode.Converter": {
             "target": "Package",
             "version": "[1.4.3, )"
+          },
+          "YoutubeSearch.dll": {
+            "target": "Package",
+            "version": "[1.1.0, )"
           }
         },
         "imports": [
@@ -13341,5 +13430,17 @@
         "#import": []
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"YoutubeSearch.dll 1.1.0\" wurde nicht mit dem Projektzielframework \"UAP,Version=v10.0.17763\", sondern mit \".NETFramework,Version=v4.6.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "YoutubeSearch.dll",
+      "targetGraphs": [
+        "UAP,Version=v10.0.17763"
+      ]
+    }
+  ]
 }

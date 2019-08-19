@@ -31,7 +31,7 @@ namespace SpotiTube
             this.currentTime = CurrentTime;
             this.timeSlider = TimeSlider;
             this.clock.Elapsed += new ElapsedEventHandler(onTimerEvent);
-            this.clock.Interval = 1000;
+            this.clock.Interval = 500;
             this.clock.Enabled = true;
         }
 

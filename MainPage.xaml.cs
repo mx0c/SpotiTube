@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SpotiTube;
 using Windows.Media.Playback;
+using YoutubeSearch;
 
 namespace App1
 {
@@ -80,6 +81,25 @@ namespace App1
         private void TimeSlider_OnPointerRelease(object sender, PointerRoutedEventArgs e)
         {
             this.musicPlayer.seek(this.TimeSlider.Value);
+        }
+
+        private void SearchBar_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                var items = new VideoSearch();
+                foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
+                {
+                    this.MainListView.Items.Add(new Song(item.Title,item.Url,new DateTime(),item.Thumbnail));
+                }
+            }
+        }
+
+        private void onItemClicked(object sender, ItemClickEventArgs e)
+        {
+            Song selectedSong = (Song)e.ClickedItem;
+            this.PlayButton.Content = "\uE769";
+            this.musicPlayer.PlaySong(selectedSong.SongURL);
         }
     }
 }

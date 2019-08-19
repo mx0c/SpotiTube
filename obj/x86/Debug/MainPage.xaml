@@ -16,14 +16,14 @@
 
 		<ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
 			<!-- insert Playlists -->
-			
-		</ScrollViewer>
-
-
+            <ListBox>
+                
+            </ListBox>
+        </ScrollViewer>
 
 		<Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="0.5*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
                 <RowDefinition Height="0.3*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -42,9 +42,28 @@
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
+
+            <Border Background="Gray" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
+                <ScrollViewer x:ConnectionId='10' Padding="10 10 10 10"  Name="MainViewer">
+                    <GridView x:ConnectionId='11' Name="MainListView" SelectionMode="Multiple"                           IsItemClickEnabled="True">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="LightGray">
+                                    <StackPanel Padding="10 10 10 10" Width="250" Height="165">
+                                        <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="{Binding ThumbnailURL}"></Image>
+                                        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Title}"></TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </ScrollViewer>
+            </Border>
+
             <Border Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="11" Background="LightGray"></Border>
-            <TextBox x:ConnectionId='2'  Name="SearchBar" Padding="50 5 0 0" CornerRadius="10" Margin="0 10 10 10" Grid.Column="1" Grid.ColumnSpan="9" Background="#66ACACAC" Height="40" VerticalAlignment="Top" FontSize="20"></TextBox>
+            <Border Grid.ColumnSpan="11" Background="LightGray"></Border>
+            
+            <TextBox x:ConnectionId='2'  Name="SearchBar"                         Padding="50 5 0 0" CornerRadius="10" Margin="0 10 10 10" Grid.Column="1" Grid.ColumnSpan="9" Background="#66ACACAC" Height="40" VerticalAlignment="Top" FontSize="20"></TextBox>
             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="25" Margin="10 18 0 0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">&#xE721;</TextBlock>
             <Button Height="50" MinWidth="50" MaxWidth="75" Content="&#xE8B1;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="30"></Button>
             <Button Height="50" Content="&#xE8EE;" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="30"></Button>
