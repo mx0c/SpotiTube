@@ -90,7 +90,8 @@ namespace App1
                 var items = new VideoSearch();
                 foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
                 {
-                    this.MainListView.Items.Add(new Song(item.Title,item.Url,new DateTime(),item.Thumbnail));
+                    this.MainListView.Items.Add(new Song(item.Title,item.Url,new DateTime(),item.Thumbnail,item.Duration));
+                    
                 }
             }
         }
@@ -100,6 +101,11 @@ namespace App1
             Song selectedSong = (Song)e.ClickedItem;
             this.PlayButton.Content = "\uE769";
             this.musicPlayer.PlaySong(selectedSong.SongURL);
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }

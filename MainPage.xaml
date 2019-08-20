@@ -13,15 +13,37 @@
 			<ColumnDefinition Width="0.3*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="0.75*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+        </Grid.RowDefinitions>
 
-		<ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
-			<!-- insert Playlists -->
-            <ListBox>
-                
-            </ListBox>
-        </ScrollViewer>
+        <Border Grid.Row="3" Grid.RowSpan="2" Background="LightGray"></Border>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="45" FontFamily="Arial" FontWeight="Bold">SpotiTube</TextBlock>
 
-		<Grid Grid.Column="1">
+        <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.075*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button Click="MinimizeButton_Click" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="30">&#xE74E;</TextBlock>
+
+            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="3" >
+                <ListBox></ListBox>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.RowSpan="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.5*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
@@ -43,7 +65,7 @@
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
+            <Border Name="Main" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
                 <ScrollViewer Padding="10 10 10 10"  Name="MainViewer">
                     <GridView Name="MainListView" SelectionMode="Multiple" ItemClick="onItemClicked" IsItemClickEnabled="True">
                         <GridView.ItemTemplate>

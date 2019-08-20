@@ -9,23 +9,25 @@ namespace SpotiTube
 
     public class Song
     {
-        public String Title{ get; set; }
+        public String Title { get; set; }
         public String SongURL { get; set; }
         public String ThumbnailURL { get; set; }
         public DateTime addedAt { get; set; }
+        public String duration { get; set; }
 
-        public Song(String Title, String songUrl, DateTime addedAt, String ThumbnailURL)
+        public Song(String Title, String songUrl, DateTime addedAt, String ThumbnailURL, String duration)
         {
             this.Title = Title;
             this.SongURL = songUrl;
             this.addedAt = addedAt;
             this.ThumbnailURL = ThumbnailURL;
+            this.duration = duration;
         }
     }
 
     class Playlist
     {
-        private String Title;
-        private List<Song> songlist;
+        public String Title { get; set; }
+        public List<Song> songlist { get; set; }
     }
 }
