@@ -45,6 +45,7 @@
                                 <FlyoutBase.AttachedFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem x:ConnectionId='18'                          Name="EditButton" Text="Rename"/>
+                                        <MenuFlyoutItem x:ConnectionId='19'                            Text="Delete"/>
                                     </MenuFlyout>
                                 </FlyoutBase.AttachedFlyout>
                                 <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
@@ -122,8 +123,8 @@
             <Border Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="11" Background="LightGray"></Border>
             <Border Grid.ColumnSpan="11" Background="LightGray"></Border>
             
-            <TextBox x:ConnectionId='3'  Name="SearchBar"                         Padding="50 5 0 0" CornerRadius="10" Margin="0 10 10 10" Grid.Column="1" Grid.ColumnSpan="9" Background="#66ACACAC" Height="40" VerticalAlignment="Top" FontSize="20"></TextBox>
-            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="25" Margin="10 18 0 0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">&#xE721;</TextBlock>
+            <TextBox x:ConnectionId='3'  Name="SearchBar"                         Padding="50 5 0 0" CornerRadius="10" Margin="0 10 10 10" Grid.Column="0" Grid.ColumnSpan="11" Background="#66ACACAC" Height="40" VerticalAlignment="Top" FontSize="20"></TextBox>
+            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="25" Margin="10 18 0 0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">&#xE721;</TextBlock>
             <Button Height="40" Content="&#xE8B1;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
             <Button Height="40" Content="&#xE8EE;" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
             <Button x:ConnectionId='4' Height="50"                          HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="3" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>

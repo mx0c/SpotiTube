@@ -28,7 +28,7 @@ namespace App1
         private Song latestSelectedSong;
         private List<Song> selectedSongs = new List<Song>();
         private Song draggedSong;
-        private Playlist renamedPlaylist;
+        private Playlist selectedPlaylist;
 
         public MainPage()
         {
@@ -137,6 +137,8 @@ namespace App1
         private async void AddPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             String plName = await this.InputTextDialogAsync("Playlist name", "Add");
+            if (plName == "")
+                return;
             var npl = new Playlist { Title = plName };
             await DataIO.SavePlaylist(npl);
             this.PlaylistList.Items.Clear();
@@ -190,15 +192,15 @@ namespace App1
         {
             FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout((StackPanel)sender);
             flyoutBase.ShowAt((StackPanel)sender);
-            this.renamedPlaylist = ((StackPanel)sender).DataContext as Playlist;
+            this.selectedPlaylist = ((StackPanel)sender).DataContext as Playlist;
         }
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             String nTitle = await this.InputTextDialogAsync("Rename Playlist", "Rename");
-            String oldTitle = this.renamedPlaylist.Title;
-            this.renamedPlaylist.Title = nTitle;
-            await DataIO.SavePlaylist(this.renamedPlaylist,oldTitle);
+            String oldTitle = this.selectedPlaylist.Title;
+            this.selectedPlaylist.Title = nTitle;
+            await DataIO.SavePlaylist(this.selectedPlaylist, oldTitle);
             this.PlaylistList.Items.Clear();
             this.loadPlaylists();
         }
@@ -224,6 +226,13 @@ namespace App1
                 return inputTextBox.Text;
             else
                 return "";
+        }
+
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            await DataIO.RemovePlaylist(this.selectedPlaylist.Title);
+            this.PlaylistList.Items.Clear();
+            this.loadPlaylists();
         }
     }
 }

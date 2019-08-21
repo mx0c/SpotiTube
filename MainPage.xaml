@@ -45,6 +45,7 @@
                                 <FlyoutBase.AttachedFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem Click="EditButton_Click" Name="EditButton" Text="Rename"/>
+                                        <MenuFlyoutItem Click="DeleteButton_Click" Text="Delete"/>
                                     </MenuFlyout>
                                 </FlyoutBase.AttachedFlyout>
                                 <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>

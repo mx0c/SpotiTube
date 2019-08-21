@@ -39,6 +39,16 @@ namespace SpotiTube
             return ret;
         }
 
+        public async static Task RemovePlaylist(string name)
+        {
+            var allPlayLists = await ReadPlaylists();
+            var i = allPlayLists.FindIndex(x => x.Title == name);
+            allPlayLists.RemoveAt(i);
+            String json = JsonConvert.SerializeObject(allPlayLists);
+            var file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
+            await FileIO.WriteTextAsync(file, json);
+        }
+
         public async static Task SavePlaylist(Playlist pList, String overridePListTitle = null)
         {
             var allPlayLists = await ReadPlaylists();
