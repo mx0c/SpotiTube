@@ -134,15 +134,22 @@ namespace App1
             this.selectedSongs.Add((Song)e.ClickedItem);
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        private async void AddPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-           
+            String plName = await this.InputTextDialogAsync("Playlist name", "Add");
+            var npl = new Playlist { Title = plName };
+            await DataIO.SavePlaylist(npl);
+            this.PlaylistList.Items.Clear();
+            this.loadPlaylists();
         }
 
         private void PlaylistList_ItemClick(object sender, ItemClickEventArgs e)
         {
             this.MainListView.Items.Clear();
             var playlist = (Playlist)e.ClickedItem;
+            if (playlist.Songlist == null)
+                //wenn keine songs enthalten
+                return;
             foreach (var song in playlist.Songlist)
             {
                 this.MainListView.Items.Add(song);
@@ -188,7 +195,7 @@ namespace App1
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            String nTitle = await this.InputTextDialogAsync("Rename Playlist");
+            String nTitle = await this.InputTextDialogAsync("Rename Playlist", "Rename");
             String oldTitle = this.renamedPlaylist.Title;
             this.renamedPlaylist.Title = nTitle;
             await DataIO.SavePlaylist(this.renamedPlaylist,oldTitle);
@@ -202,7 +209,7 @@ namespace App1
             this.musicPlayer.PlaySong(((sender as Grid).DataContext as Song).SongURL);
         }
 
-        private async Task<string> InputTextDialogAsync(string title)
+        private async Task<string> InputTextDialogAsync(string title,string buttonText)
         {
             TextBox inputTextBox = new TextBox();
             inputTextBox.AcceptsReturn = false;
@@ -211,7 +218,7 @@ namespace App1
             dialog.Content = inputTextBox;
             dialog.Title = title;
             dialog.IsSecondaryButtonEnabled = true;
-            dialog.PrimaryButtonText = "Rename";
+            dialog.PrimaryButtonText = buttonText;
             dialog.SecondaryButtonText = "Cancel";
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                 return inputTextBox.Text;

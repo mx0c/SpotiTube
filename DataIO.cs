@@ -42,10 +42,19 @@ namespace SpotiTube
         public async static Task SavePlaylist(Playlist pList, String overridePListTitle = null)
         {
             var allPlayLists = await ReadPlaylists();
+            int i;
+
             if (overridePListTitle == null)
-                allPlayLists[allPlayLists.FindIndex(x => x.Title == pList.Title)] = pList;              
+                i = allPlayLists.FindIndex(x => x.Title == pList.Title);
             else
-                allPlayLists[allPlayLists.FindIndex(x => x.Title == overridePListTitle)] = pList;
+                i = allPlayLists.FindIndex(x => x.Title == overridePListTitle);
+
+            if (i == -1)
+                //neue Playlist anlegen
+                allPlayLists.Add(pList);
+            else
+                allPlayLists[i] = pList;
+
             String json = JsonConvert.SerializeObject(allPlayLists);
             var file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
             await FileIO.WriteTextAsync(file, json);
