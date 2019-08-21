@@ -15,17 +15,46 @@ using Windows.UI.Xaml.Navigation;
 using SpotiTube;
 using Windows.Media.Playback;
 using YoutubeSearch;
+using Windows.ApplicationModel.DataTransfer;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace App1
 {
     public sealed partial class MainPage : Page
     {
         private MusicPlayer musicPlayer;
+        private Song latestSelectedSong;
+        private List<Song> selectedSongs = new List<Song>();
+        private Song draggedSong;
+        private Playlist renamedPlaylist;
+
         public MainPage()
         {
             this.InitializeComponent();
             this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
+            Task.Run(() => this.loadPlaylists()).Wait();
+        }
+
+        private async void loadPlaylists()
+        {
+            try
+            {
+                List<Playlist> lists = await DataIO.ReadPlaylists();
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    foreach (Playlist list in lists)
+                    {
+                        this.PlaylistList.Items.Add(list);
+                    }
+                });
+            }
+            catch (NullReferenceException)
+            {
+                return;
+            }
         }
 
         public void changeCurrentDurationText(String currDur)
@@ -53,7 +82,7 @@ namespace App1
             if (this.musicPlayer.mPlayer.CurrentState == MediaPlayerState.Stopped || this.musicPlayer.mPlayer.CurrentState == MediaPlayerState.Closed)
             {
                 this.PlayButton.Content = "\uE769";
-                this.musicPlayer.PlaySong(this.SearchBar.Text);
+                this.musicPlayer.PlaySong(this.latestSelectedSong.SongURL);
             }
             else if (this.musicPlayer.mPlayer.CurrentState == MediaPlayerState.Paused)
             {
@@ -87,25 +116,107 @@ namespace App1
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
+                this.MainListView.Items.Clear();
+                if (this.selectedSongs !=  null)
+                    this.selectedSongs.Clear();
+
                 var items = new VideoSearch();
                 foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
                 {
-                    this.MainListView.Items.Add(new Song(item.Title,item.Url,new DateTime(),item.Thumbnail,item.Duration));
-                    
+                    this.MainListView.Items.Add(new Song(item.Title,item.Url,"",item.Thumbnail,item.Duration));                  
                 }
             }
         }
 
         private void onItemClicked(object sender, ItemClickEventArgs e)
         {
-            Song selectedSong = (Song)e.ClickedItem;
-            this.PlayButton.Content = "\uE769";
-            this.musicPlayer.PlaySong(selectedSong.SongURL);
+            this.latestSelectedSong = (Song)e.ClickedItem;
+            this.selectedSongs.Add((Song)e.ClickedItem);
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
            
+        }
+
+        private void PlaylistList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            this.MainListView.Items.Clear();
+            var playlist = (Playlist)e.ClickedItem;
+            foreach (var song in playlist.Songlist)
+            {
+                this.MainListView.Items.Add(song);
+            }
+        }
+
+        private void Grid_DragStarting(UIElement sender, DragStartingEventArgs args)
+        {
+            args.AllowedOperations = DataPackageOperation.Copy;
+            var song = (sender as Grid).DataContext as Song;
+            this.draggedSong = song;
+            DateTime today = DateTime.Today;
+            draggedSong.addedAt = today.ToString("dd/MM/yyyy");
+        }
+
+        private void StackPanel_Drop(object sender, DragEventArgs e)
+        {
+            Playlist pl = ((StackPanel)sender).DataContext as Playlist;
+            if (pl.Songlist != null)
+            {
+                pl.Songlist.Add(this.draggedSong);
+            }
+            else
+            {
+                pl.Songlist = new List<Song>();
+                pl.Songlist.Add(this.draggedSong);
+            }
+            DataIO.SavePlaylist(pl);
+        }
+
+        private void StackPanel_DragEnter(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+            e.DragUIOverride.Caption = "Zu Playlist hinzufügen";
+        }
+
+        private void StackPanel_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout((StackPanel)sender);
+            flyoutBase.ShowAt((StackPanel)sender);
+            this.renamedPlaylist = ((StackPanel)sender).DataContext as Playlist;
+        }
+
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            String nTitle = await this.InputTextDialogAsync("Rename Playlist");
+            String oldTitle = this.renamedPlaylist.Title;
+            this.renamedPlaylist.Title = nTitle;
+            await DataIO.SavePlaylist(this.renamedPlaylist,oldTitle);
+            this.PlaylistList.Items.Clear();
+            this.loadPlaylists();
+        }
+
+        private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            this.PlayButton.Content = "\uE769";
+            this.musicPlayer.PlaySong(((sender as Grid).DataContext as Song).SongURL);
+        }
+
+        private async Task<string> InputTextDialogAsync(string title)
+        {
+            TextBox inputTextBox = new TextBox();
+            inputTextBox.AcceptsReturn = false;
+            inputTextBox.Height = 32;
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = inputTextBox;
+            dialog.Title = title;
+            dialog.IsSecondaryButtonEnabled = true;
+            dialog.PrimaryButtonText = "Rename";
+            dialog.SecondaryButtonText = "Cancel";
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                return inputTextBox.Text;
+            else
+                return "";
         }
     }
 }

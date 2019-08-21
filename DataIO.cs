@@ -5,31 +5,50 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using Windows.Storage;
 
 namespace SpotiTube
 {
     static class DataIO
     {
-        public static List<Playlist> ReadPlaylists()
+        public async static Task<List<Playlist>> ReadPlaylists()
         {
-            List<Playlist> playlists = new List<Playlist>();
-            var playlistFileNames = Directory.GetFiles($"{System.Environment.CurrentDirectory}\\playlists");
-            foreach (var filename in playlistFileNames)
+            StorageFile file;
+            try
             {
-                var jsonString = File.ReadAllText($"{System.Environment.CurrentDirectory}\\playlists\\{filename}");
-                Playlist playlist = (Playlist)JsonConvert.DeserializeObject(jsonString);
-                playlists.Append(playlist);
+                file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
             }
+            catch (FileNotFoundException) {
+                return (await createPlaylist());
+            }
+            var content = await FileIO.ReadTextAsync(file);
+            var jArr = (Newtonsoft.Json.Linq.JArray)JsonConvert.DeserializeObject(content);
+            List<Playlist> playlists = jArr.ToObject<List<Playlist>>();
             return playlists;
         }
 
-        public static void SavePlaylist(Playlist[] lists)
+        private static async Task<List<Playlist>> createPlaylist()
         {
-            foreach(Playlist list in lists)
-            {
-                String json = JsonConvert.SerializeObject(lists);
-                File.WriteAllText($"{System.Environment.CurrentDirectory}\\playlists\\{list.Title}", json);
-            }
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("playlists.json");
+            var newPlaylist = new Playlist();
+            newPlaylist.Title = "new Playlist";
+            List<Playlist> ret = new List<Playlist>();
+            ret.Add(newPlaylist);
+            String json = JsonConvert.SerializeObject(ret);
+            await FileIO.WriteTextAsync(file, json);
+            return ret;
+        }
+
+        public async static Task SavePlaylist(Playlist pList, String overridePListTitle = null)
+        {
+            var allPlayLists = await ReadPlaylists();
+            if (overridePListTitle == null)
+                allPlayLists[allPlayLists.FindIndex(x => x.Title == pList.Title)] = pList;              
+            else
+                allPlayLists[allPlayLists.FindIndex(x => x.Title == overridePListTitle)] = pList;
+            String json = JsonConvert.SerializeObject(allPlayLists);
+            var file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
+            await FileIO.WriteTextAsync(file, json);
         }        
     }
 }

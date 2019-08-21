@@ -12,10 +12,10 @@ namespace SpotiTube
         public String Title { get; set; }
         public String SongURL { get; set; }
         public String ThumbnailURL { get; set; }
-        public DateTime addedAt { get; set; }
+        public String addedAt { get; set; }
         public String duration { get; set; }
 
-        public Song(String Title, String songUrl, DateTime addedAt, String ThumbnailURL, String duration)
+        public Song(String Title, String songUrl, String addedAt, String ThumbnailURL, String duration)
         {
             this.Title = Title;
             this.SongURL = songUrl;
@@ -28,6 +28,6 @@ namespace SpotiTube
     class Playlist
     {
         public String Title { get; set; }
-        public List<Song> songlist { get; set; }
+        public List<Song> Songlist { get; set; }
     }
 }
