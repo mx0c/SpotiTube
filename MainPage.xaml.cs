@@ -33,6 +33,7 @@ namespace App1
         private Song currentlyPlayingSong;
         private bool maximized = false;
         private bool loop = false;
+        private bool random = false;
 
         public MainPage()
         {
@@ -42,9 +43,16 @@ namespace App1
             Task.Run(() => this.loadPlaylists()).Wait();
             this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
                 if (!this.loop)
-                    this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+                {
+                    if(random)
+                        this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist,true);
+                    else
+                        this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+                }
                 else
+                {
                     this.musicPlayer.PlaySong(this.currentlyPlayingSong.SongURL);
+                }
             };
         }
       
@@ -79,12 +87,12 @@ namespace App1
 
         private void LeftButton_Click(object sender, RoutedEventArgs e)
         {
-            this.musicPlayer.skipSong(false, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+            this.musicPlayer.skipSong(false, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist, this.random);
         }
 
         private void RightButton_Click(object sender, RoutedEventArgs e)
         {
-            this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);         
+            this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist, this.random);         
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -133,7 +141,7 @@ namespace App1
                 var items = new VideoSearch();
                 foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
                 {
-                    this.MainListView.Items.Add(new Song(item.Title,item.Url,"",item.Thumbnail,item.Duration));                  
+                    this.MainListView.Items.Add(new Song(item.Title,item.Url,"none",item.Thumbnail,item.Duration));                  
                 }
             }
         }
@@ -282,6 +290,20 @@ namespace App1
             {
                 this.loop = false;
                 this.loopButton.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
+            }
+        }
+
+        private void RandomButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.random)
+            {
+                this.random = true;
+                this.randomButton.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
+            }
+            else
+            {
+                this.random = false;
+                this.randomButton.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             }
         }
     }
