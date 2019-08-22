@@ -69,12 +69,12 @@ namespace SpotiTube
             //right
             if (direction)
             {
-                if (i == currentPlaylist.Songlist.Count)
+                if (i == currentPlaylist.Songlist.Count-1)
                     i = -1;
                 this.PlaySong(currentPlaylist.Songlist[++i].SongURL);
             }
             else {
-                if (i == currentPlaylist.Songlist.Count)
+                if (i == currentPlaylist.Songlist.Count-1)
                     i = 1;
                 this.PlaySong(currentPlaylist.Songlist[--i].SongURL);
             }
