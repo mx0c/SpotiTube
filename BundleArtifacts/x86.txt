@@ -1,0 +1,5 @@
+MainPackage=C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube_1.0.1.0_x86_Debug.msix
+ResourcePack=C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube_1.0.1.0_scale-100.msix
+ResourcePack=C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube_1.0.1.0_scale-125.msix
+ResourcePack=C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube_1.0.1.0_scale-150.msix
+ResourcePack=C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube_1.0.1.0_scale-400.msix

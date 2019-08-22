@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppxPackageIsForStore>False</AppxPackageIsForStore>
+    <AppxShowAllApps>False</AppxShowAllApps>
+    <AppxBuildConfigurationSelection>x86</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <Source>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</Source>
+    <SmallTileSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</SmallTileSource>
+    <MediumTileSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</MediumTileSource>
+    <WideTileSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</WideTileSource>
+    <LargeTileSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</LargeTileSource>
+    <AppIconSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</AppIconSource>
+    <SplashScreenSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</SplashScreenSource>
+    <PackageLogoSource>C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\Assets\song.png</PackageLogoSource>
+  </PropertyGroup>
+</Project>
