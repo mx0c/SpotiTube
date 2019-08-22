@@ -32,6 +32,7 @@ namespace App1
         private Playlist currentlyPlayingPlaylist;
         private Song currentlyPlayingSong;
         private bool maximized = false;
+        private bool loop = false;
 
         public MainPage()
         {
@@ -40,12 +41,13 @@ namespace App1
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
             this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
-                this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+                if (!this.loop)
+                    this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+                else
+                    this.musicPlayer.PlaySong(this.currentlyPlayingSong.SongURL);
             };
         }
-
-        
-
+      
         private async void loadPlaylists()
         {
             try
@@ -266,6 +268,20 @@ namespace App1
                 this.navbar.Visibility = Visibility.Visible;
                 this.maximizeButton.Visibility = Visibility.Collapsed;
                 this.maximized = false;
+            }
+        }
+
+        private void LoopButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.loop)
+            {
+                this.loop = true;
+                this.loopButton.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
+            }
+            else
+            {
+                this.loop = false;
+                this.loopButton.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             }
         }
     }
