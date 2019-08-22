@@ -56,6 +56,26 @@ namespace SpotiTube
             return audioStreamInfo.Url;
         }
 
+        public void skipSong(bool direction, ref Song currentSong, Playlist currentPlaylist)
+        {
+            var temp = currentSong;
+            var i = currentPlaylist.Songlist.FindIndex(x => x == temp);
+
+            //right
+            if (direction)
+            {
+                if (i == currentPlaylist.Songlist.Count)
+                    i = -1;
+                this.PlaySong(currentPlaylist.Songlist[++i].SongURL);
+            }
+            else {
+                if (i == currentPlaylist.Songlist.Count)
+                    i = 1;
+                this.PlaySong(currentPlaylist.Songlist[--i].SongURL);
+            }
+            currentSong = currentPlaylist.Songlist[i];
+        }
+
         public void PauseSong()
         {
             this.mPlayer.Pause();

@@ -39,7 +39,12 @@ namespace App1
             this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
+            this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
+                this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+            };
         }
+
+        
 
         private async void loadPlaylists()
         {
@@ -71,21 +76,13 @@ namespace App1
         }
 
         private void LeftButton_Click(object sender, RoutedEventArgs e)
-        {           
-            var i = this.currentlyPlayingPlaylist.Songlist.FindIndex(x => x == this.currentlyPlayingSong);
-            if (i == 0)
-                i = 1;
-            this.musicPlayer.PlaySong(this.currentlyPlayingPlaylist.Songlist[--i].SongURL);
-            this.currentlyPlayingSong = this.currentlyPlayingPlaylist.Songlist[i];
+        {
+            this.musicPlayer.skipSong(false, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
         }
 
         private void RightButton_Click(object sender, RoutedEventArgs e)
-        {    
-            var i = this.currentlyPlayingPlaylist.Songlist.FindIndex(x => x == this.currentlyPlayingSong);
-            if (i == this.currentlyPlayingPlaylist.Songlist.Count)
-                i = -1;
-            this.musicPlayer.PlaySong(this.currentlyPlayingPlaylist.Songlist[++i].SongURL);
-            this.currentlyPlayingSong = this.currentlyPlayingPlaylist.Songlist[i];
+        {
+            this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);         
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
