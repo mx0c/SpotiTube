@@ -29,6 +29,7 @@ namespace App1
         private List<Song> selectedSongs = new List<Song>();
         private Song draggedSong;
         private Playlist selectedPlaylist;
+        private bool maximized = false;
 
         public MainPage()
         {
@@ -233,6 +234,28 @@ namespace App1
             await DataIO.RemovePlaylist(this.selectedPlaylist.Title);
             this.PlaylistList.Items.Clear();
             this.loadPlaylists();
+        }
+
+        private void MaximizeMinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.maximized)
+            {
+                Grid.SetColumn(this.mainGrid, 1);
+                Grid.SetColumnSpan(this.mainGrid, 2);
+                Grid.SetColumnSpan(this.navbar, 1);
+                this.navbar.Visibility = Visibility.Collapsed;
+                this.maximizeButton.Visibility = Visibility.Visible;
+                this.maximized = true;
+            }
+            else
+            {
+                Grid.SetColumn(this.mainGrid, 2);
+                Grid.SetColumnSpan(this.navbar, 2);
+                Grid.SetColumnSpan(this.mainGrid, 1);
+                this.navbar.Visibility = Visibility.Visible;
+                this.maximizeButton.Visibility = Visibility.Collapsed;
+                this.maximized = false;
+            }
         }
     }
 }

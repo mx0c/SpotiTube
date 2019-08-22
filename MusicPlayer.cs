@@ -70,7 +70,7 @@ namespace SpotiTube
             this.mPlayer.Volume = percentage / 100.0;
         }
 
-        public async void PlaySong(String youtubeURL, bool debugging = false)
+        public async void PlaySong(String youtubeURL)
         {
             var stream = await this.GetAudioStream(youtubeURL); 
             this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));      

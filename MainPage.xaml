@@ -10,7 +10,8 @@
 
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="0.3*"></ColumnDefinition>
+			<ColumnDefinition Width="0.075*"></ColumnDefinition>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -21,10 +22,13 @@
             <RowDefinition Height="0.3*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="LightGray"></Border>
-        <Border Grid.Row="3" Grid.RowSpan="2" Background="LightGray"></Border>
-        
-        <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="LightGray"></Border>
+        <Border Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="LightGray"></Border>
+
+        <Border Grid.Row="1" Grid.RowSpan="2" Background="LightGray" Visibility="Visible"></Border>
+        <Button Grid.Row="1" Click="MaximizeMinimizeButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" FontSize="20" Visibility="Collapsed" Name="maximizeButton">&#xEA62;</Button>
+       
+        <Grid Name="navbar" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -35,7 +39,8 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Click="AddPlaylistButton_Click" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
+            <Button Click="AddPlaylistButton_Click" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
+            <Button Click="MaximizeMinimizeButton_Click" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
 
             <ScrollViewer Margin="0 15 0 0" Grid.Row="2" Grid.ColumnSpan="3" >
                 <ListView IsItemClickEnabled="True" ItemClick="PlaylistList_ItemClick" Name="PlaylistList">
@@ -57,7 +62,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Grid Grid.Column="1" Grid.RowSpan="5">
+        <Grid Name="mainGrid"  Grid.Column="2" Grid.RowSpan="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.5*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
