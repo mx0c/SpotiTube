@@ -102,4 +102,3 @@ C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\obj\x86\Debug\ProjectArchitectu
 C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\obj\x86\Debug\.winmd_cache\$Microsoft.UI.Xaml.Markup.winmd_636758516200000000.json
 C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube.build.appxrecipe
 C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\YoutubeSearch.dll
-C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\playlists.json

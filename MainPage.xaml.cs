@@ -29,6 +29,8 @@ namespace App1
         private List<Song> selectedSongs = new List<Song>();
         private Song draggedSong;
         private Playlist selectedPlaylist;
+        private Playlist currentlyPlayingPlaylist;
+        private Song currentlyPlayingSong;
         private bool maximized = false;
 
         public MainPage()
@@ -69,13 +71,21 @@ namespace App1
         }
 
         private void LeftButton_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {           
+            var i = this.currentlyPlayingPlaylist.Songlist.FindIndex(x => x == this.currentlyPlayingSong);
+            if (i == 0)
+                i = 1;
+            this.musicPlayer.PlaySong(this.currentlyPlayingPlaylist.Songlist[--i].SongURL);
+            this.currentlyPlayingSong = this.currentlyPlayingPlaylist.Songlist[i];
         }
 
         private void RightButton_Click(object sender, RoutedEventArgs e)
-        {
-
+        {    
+            var i = this.currentlyPlayingPlaylist.Songlist.FindIndex(x => x == this.currentlyPlayingSong);
+            if (i == this.currentlyPlayingPlaylist.Songlist.Count)
+                i = -1;
+            this.musicPlayer.PlaySong(this.currentlyPlayingPlaylist.Songlist[++i].SongURL);
+            this.currentlyPlayingSong = this.currentlyPlayingPlaylist.Songlist[i];
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -150,6 +160,7 @@ namespace App1
         {
             this.MainListView.Items.Clear();
             var playlist = (Playlist)e.ClickedItem;
+            this.selectedPlaylist = playlist;
             if (playlist.Songlist == null)
                 //wenn keine songs enthalten
                 return;
@@ -209,7 +220,10 @@ namespace App1
         private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             this.PlayButton.Content = "\uE769";
-            this.musicPlayer.PlaySong(((sender as Grid).DataContext as Song).SongURL);
+            var song = ((sender as Grid).DataContext as Song);
+            this.musicPlayer.PlaySong(song.SongURL);
+            this.currentlyPlayingPlaylist = this.selectedPlaylist;
+            this.currentlyPlayingSong = song; ;
         }
 
         private async Task<string> InputTextDialogAsync(string title,string buttonText)
