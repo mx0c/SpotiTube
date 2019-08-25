@@ -38,7 +38,7 @@ namespace App1
         public MainPage()
         {
             this.InitializeComponent();
-            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider);
+            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
             this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
@@ -97,12 +97,15 @@ namespace App1
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.musicPlayer.mPlayer.CurrentState == MediaPlayerState.Stopped || this.musicPlayer.mPlayer.CurrentState == MediaPlayerState.Closed)
+            if (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.None)
             {
-                this.PlayButton.Content = "\uE769";
-                this.musicPlayer.PlaySong(this.latestSelectedSong.SongURL);
+                if (this.latestSelectedSong != null)
+                {
+                    this.PlayButton.Content = "\uE769";
+                    this.musicPlayer.PlaySong(this.latestSelectedSong.SongURL);
+                }
             }
-            else if (this.musicPlayer.mPlayer.CurrentState == MediaPlayerState.Paused)
+            else if (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
             {
                 this.PlayButton.Content = "\uE769";
                 this.musicPlayer.resume();
@@ -186,7 +189,7 @@ namespace App1
             draggedSong.addedAt = today.ToString("dd/MM/yyyy");
         }
 
-        private void StackPanel_Drop(object sender, DragEventArgs e)
+        private async void StackPanel_Drop(object sender, DragEventArgs e)
         {
             Playlist pl = ((StackPanel)sender).DataContext as Playlist;
             if (pl.Songlist != null)
@@ -198,7 +201,7 @@ namespace App1
                 pl.Songlist = new List<Song>();
                 pl.Songlist.Add(this.draggedSong);
             }
-            DataIO.SavePlaylist(pl);
+            await DataIO.SavePlaylist(pl);
         }
 
         private void StackPanel_DragEnter(object sender, DragEventArgs e)
@@ -209,9 +212,22 @@ namespace App1
 
         private void StackPanel_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout((StackPanel)sender);
-            flyoutBase.ShowAt((StackPanel)sender);
-            this.selectedPlaylist = ((StackPanel)sender).DataContext as Playlist;
+            var lv = (ListView)sender;
+            FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(lv);
+            
+            try
+            {
+                var tmp = e.OriginalSource as ListViewItemPresenter;
+                this.selectedPlaylist = tmp.DataContext as Playlist;
+                flyoutBase.ShowAt(tmp);
+            }
+            catch (Exception)
+
+            {
+                var tmp = e.OriginalSource as TextBlock;
+                this.selectedPlaylist = tmp.DataContext as Playlist;
+                flyoutBase.ShowAt(tmp);
+            }
         }
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
@@ -229,6 +245,7 @@ namespace App1
             this.PlayButton.Content = "\uE769";
             var song = ((sender as Grid).DataContext as Song);
             this.musicPlayer.PlaySong(song.SongURL);
+            this.MainListView.SelectedItem = song;
             this.currentlyPlayingPlaylist = this.selectedPlaylist;
             this.currentlyPlayingSong = song; ;
         }

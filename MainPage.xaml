@@ -43,16 +43,16 @@
             <Button Click="MaximizeMinimizeButton_Click" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
 
             <ScrollViewer Margin="0 15 0 0" Grid.Row="2" Grid.ColumnSpan="3" >
-                <ListView IsItemClickEnabled="True" ItemClick="PlaylistList_ItemClick" Name="PlaylistList">
+                <ListView DataContext="{Binding plStackpanel}" RightTapped="StackPanel_RightTapped" IsItemClickEnabled="True" ItemClick="PlaylistList_ItemClick" Name="PlaylistList">
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Click="EditButton_Click" Name="EditButton" Text="Rename"/>
+                            <MenuFlyoutItem Click="DeleteButton_Click" Text="Delete"/>
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel RightTapped="StackPanel_RightTapped" Padding="10" Orientation="Horizontal" Drop="StackPanel_Drop" DragEnter="StackPanel_DragEnter" AllowDrop="True">
-                                <FlyoutBase.AttachedFlyout>
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem Click="EditButton_Click" Name="EditButton" Text="Rename"/>
-                                        <MenuFlyoutItem Click="DeleteButton_Click" Text="Delete"/>
-                                    </MenuFlyout>
-                                </FlyoutBase.AttachedFlyout>
+                            <StackPanel Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal" Drop="StackPanel_Drop" DragEnter="StackPanel_DragEnter" AllowDrop="True">
                                 <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Margin="20 0 0 0"></TextBlock>
                             </StackPanel>
@@ -86,7 +86,7 @@
 
             <Border Name="Main" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
                 <ScrollViewer Name="MainViewer">
-                    <ListView Name="MainListView" ItemClick="onItemClicked" IsItemClickEnabled="True">
+                    <ListView SelectionMode="Single" Name="MainListView" ItemClick="onItemClicked" IsItemClickEnabled="True">
                         <ListView.HeaderTemplate>
                             <DataTemplate>
                                 <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
@@ -136,7 +136,7 @@
             <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="3" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
             <Button Height="50" Click="RightButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="3" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
             <TextBlock Grid.Row="3" Grid.Column="8" FontFamily="Segoe MDL2 Assets" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">&#xE994;</TextBlock>
-            <Slider Value="100" Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="3" ValueChanged="VolumeSlider_Changed" Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+            <Slider Value="50" Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="3" ValueChanged="VolumeSlider_Changed" Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
             <Slider Maximum="100" Minimum="0" Name="TimeSlider" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
             <TextBlock Name="CurrentTime" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center">0:00</TextBlock>
             <TextBlock Name="CurrentDuration" Grid.Row="9" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center">0:00</TextBlock>

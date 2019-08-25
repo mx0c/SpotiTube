@@ -5,6 +5,7 @@
     <RootPropertyPathName Name="duration" />
     <RootPropertyPathName Name="Title" />
     <RootPropertyPathName Name="ThumbnailURL" />
+    <RootPropertyPathName Name="plStackpanel" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application" />
@@ -98,10 +99,13 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="Name" />
+      <RootProperty Name="SelectionMode" />
       <RootProperty Name="IsItemClickEnabled" />
       <RootProperty Name="HeaderTemplate" />
       <RootProperty Name="ItemTemplate" />
+      <RootProperty Name="DataContext" />
       <RootEvent Name="ItemClick" />
+      <RootEvent Name="RightTapped" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.DataTemplate">
       <RootProperty Name="Template" />
@@ -116,15 +120,6 @@
     <RootType FullName="Windows.UI.Xaml.Media.ImageBrush">
       <RootProperty Name="ImageSource" />
     </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
-      <RootProperty Name="Padding" />
-      <RootProperty Name="Orientation" />
-      <RootProperty Name="AllowDrop" />
-      <RootProperty Name="Children" />
-      <RootEvent Name="RightTapped" />
-      <RootEvent Name="Drop" />
-      <RootEvent Name="DragEnter" />
-    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.Primitives.FlyoutBase">
       <RootMethod Name="GetAttachedFlyout" />
       <RootMethod Name="SetAttachedFlyout" />
@@ -136,6 +131,17 @@
       <RootProperty Name="Name" />
       <RootProperty Name="Text" />
       <RootEvent Name="Click" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
+      <RootProperty Name="Name" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Padding" />
+      <RootProperty Name="Orientation" />
+      <RootProperty Name="AllowDrop" />
+      <RootProperty Name="Children" />
+      <RootEvent Name="Drop" />
+      <RootEvent Name="DragEnter" />
     </RootType>
     <RootType FullName="App1.MainPage" />
   </Roots.RootTypes>
