@@ -39,20 +39,20 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button x:ConnectionId='20'                                 Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
-            <Button x:ConnectionId='21'                                      Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
+            <Button x:ConnectionId='21'                                 Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
+            <Button x:ConnectionId='22'                                      Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
 
             <ScrollViewer Margin="0 15 0 0" Grid.Row="2" Grid.ColumnSpan="3" >
-                <ListView x:ConnectionId='22' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
+                <ListView x:ConnectionId='23' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:ConnectionId='23'                          Name="EditButton" Text="Rename"/>
-                            <MenuFlyoutItem x:ConnectionId='24'                            Text="Delete"/>
+                            <MenuFlyoutItem x:ConnectionId='24'                          Name="EditButton" Text="Rename"/>
+                            <MenuFlyoutItem x:ConnectionId='25'                            Text="Delete"/>
                         </MenuFlyout>
                     </FlyoutBase.AttachedFlyout>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel x:ConnectionId='25' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
+                            <StackPanel x:ConnectionId='26' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
                                 <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Margin="20 0 0 0"></TextBlock>
                             </StackPanel>
@@ -86,7 +86,12 @@
 
             <Border x:ConnectionId='5' Name="Main" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
                 <ScrollViewer x:ConnectionId='16' Name="MainViewer">
-                    <ListView x:ConnectionId='17' SelectionMode="Single" Name="MainListView"                           IsItemClickEnabled="True">
+                    <ListView x:ConnectionId='17'                                        SelectionMode="Single" Name="MainListView"                           IsItemClickEnabled="True">
+                        <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                                <MenuFlyoutItem x:ConnectionId='18'                                Text="Delete"/>
+                        </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
                         <ListView.HeaderTemplate>
                             <DataTemplate>
                                 <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
@@ -103,7 +108,7 @@
                         </ListView.HeaderTemplate>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid x:ConnectionId='19'                                  Height="48" CanDrag="True"                                 >
+                                <Grid x:ConnectionId='20'                                  Height="48" CanDrag="True"                                 >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="48"/>
                                         <ColumnDefinition Width="500"/>

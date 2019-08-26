@@ -86,7 +86,12 @@
 
             <Border Name="Main" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
                 <ScrollViewer Name="MainViewer">
-                    <ListView SelectionMode="Single" Name="MainListView" ItemClick="onItemClicked" IsItemClickEnabled="True">
+                    <ListView RightTapped="MainListView_RightTapped" SelectionMode="Single" Name="MainListView" ItemClick="onItemClicked" IsItemClickEnabled="True">
+                        <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                                <MenuFlyoutItem Click="DeleteSongButton_Click" Text="Delete"/>
+                        </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
                         <ListView.HeaderTemplate>
                             <DataTemplate>
                                 <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">

@@ -61,6 +61,7 @@ namespace SpotiTube
 
         public void skipSong(bool direction, ref Song currentSong, Playlist currentPlaylist,bool random = false)
         {
+            if (currentPlaylist == null) return;
             if (random) {
                 var randInt = new Random().Next(0, currentPlaylist.Songlist.Count);
                 this.PlaySong(currentPlaylist.Songlist[randInt].SongURL);

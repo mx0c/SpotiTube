@@ -104,8 +104,20 @@
       <RootProperty Name="HeaderTemplate" />
       <RootProperty Name="ItemTemplate" />
       <RootProperty Name="DataContext" />
-      <RootEvent Name="ItemClick" />
       <RootEvent Name="RightTapped" />
+      <RootEvent Name="ItemClick" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Primitives.FlyoutBase">
+      <RootMethod Name="GetAttachedFlyout" />
+      <RootMethod Name="SetAttachedFlyout" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyout">
+      <RootProperty Name="Items" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyoutItem">
+      <RootProperty Name="Text" />
+      <RootProperty Name="Name" />
+      <RootEvent Name="Click" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.DataTemplate">
       <RootProperty Name="Template" />
@@ -119,18 +131,6 @@
     <RootType FullName="Windows.UI.Xaml.Data.Binding" />
     <RootType FullName="Windows.UI.Xaml.Media.ImageBrush">
       <RootProperty Name="ImageSource" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.Primitives.FlyoutBase">
-      <RootMethod Name="GetAttachedFlyout" />
-      <RootMethod Name="SetAttachedFlyout" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyout">
-      <RootProperty Name="Items" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.MenuFlyoutItem">
-      <RootProperty Name="Name" />
-      <RootProperty Name="Text" />
-      <RootEvent Name="Click" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
       <RootProperty Name="Name" />

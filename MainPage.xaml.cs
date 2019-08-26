@@ -214,20 +214,10 @@ namespace App1
         {
             var lv = (ListView)sender;
             FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(lv);
-            
-            try
-            {
-                var tmp = e.OriginalSource as ListViewItemPresenter;
-                this.selectedPlaylist = tmp.DataContext as Playlist;
-                flyoutBase.ShowAt(tmp);
-            }
-            catch (Exception)
-
-            {
-                var tmp = e.OriginalSource as TextBlock;
-                this.selectedPlaylist = tmp.DataContext as Playlist;
-                flyoutBase.ShowAt(tmp);
-            }
+            var type = e.OriginalSource.GetType();
+            dynamic tmp = Convert.ChangeType(e.OriginalSource, type);
+            this.selectedPlaylist = tmp.DataContext as Playlist;
+            flyoutBase.ShowAt(tmp);
         }
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
@@ -322,6 +312,23 @@ namespace App1
                 this.random = false;
                 this.randomButton.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             }
+        }
+
+        private async void DeleteSongButton_Click(object sender, RoutedEventArgs e)
+        {
+            var toDelete = (sender as MenuFlyoutItem).DataContext as Song;
+            this.selectedPlaylist.Songlist.Remove(toDelete);
+            await DataIO.SavePlaylist(this.selectedPlaylist);
+            this.MainListView.Items.Remove(toDelete);
+        }
+
+        private void MainListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            var lv = (ListView)sender;
+            FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(lv);
+            var type = e.OriginalSource.GetType();
+            dynamic tmp = Convert.ChangeType(e.OriginalSource, type);
+            flyoutBase.ShowAt(tmp);
         }
     }
 }
