@@ -39,20 +39,20 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button x:ConnectionId='21'                                 Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
-            <Button x:ConnectionId='22'                                      Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
+            <Button x:ConnectionId='22'                                 Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
+            <Button x:ConnectionId='23'                                      Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
 
             <ScrollViewer Margin="0 15 0 0" Grid.Row="2" Grid.ColumnSpan="3" >
-                <ListView x:ConnectionId='23' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
+                <ListView x:ConnectionId='24' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:ConnectionId='24'                          Name="EditButton" Text="Rename"/>
-                            <MenuFlyoutItem x:ConnectionId='25'                            Text="Delete"/>
+                            <MenuFlyoutItem x:ConnectionId='25'                          Name="EditButton" Text="Rename"/>
+                            <MenuFlyoutItem x:ConnectionId='26'                            Text="Delete"/>
                         </MenuFlyout>
                     </FlyoutBase.AttachedFlyout>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel x:ConnectionId='26' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
+                            <StackPanel x:ConnectionId='27' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
                                 <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Margin="20 0 0 0"></TextBlock>
                             </StackPanel>
@@ -115,7 +115,7 @@
                                         <ColumnDefinition Width="75"/>
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Height="32" Width="32" VerticalAlignment="Center">
+                                    <Ellipse x:ConnectionId='21'                                                                                                         Height="32" Width="32" VerticalAlignment="Center">
                                         <Ellipse.Fill>
                                             <ImageBrush ImageSource="{Binding ThumbnailURL}"/>
                                         </Ellipse.Fill>

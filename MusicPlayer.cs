@@ -26,12 +26,30 @@ namespace SpotiTube
         private TextBlock currentTime;
         private Slider timeSlider;
         private ListView MainListView;
+        private Button playButton;
 
-        public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList) {
+        public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList, Button playButton) {
             this.currentDuration = CurrentDuration;
             this.currentTime = CurrentTime;
             this.timeSlider = TimeSlider;
             this.MainListView = mainList;
+            this.playButton = playButton;
+
+            this.mPlayer.CurrentStateChanged += async (player, obj) => {
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    if (player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused || player.PlaybackSession.PlaybackState == MediaPlaybackState.Opening ||
+                player.PlaybackSession.PlaybackState == MediaPlaybackState.None)
+                    {
+                        this.playButton.Content = "\uE768";
+                    }
+                    else
+                    {
+
+                        this.playButton.Content = "\uE769";
+                    }
+                });
+            };
 
             this.clock.Elapsed += new ElapsedEventHandler(onTimerEvent);
             this.clock.Interval = 500;

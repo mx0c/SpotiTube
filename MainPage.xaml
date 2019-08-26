@@ -115,7 +115,7 @@
                                         <ColumnDefinition Width="75"/>
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Height="32" Width="32" VerticalAlignment="Center">
+                                    <Ellipse  PointerEntered="Ellipse_PointerEntered" PointerExited="Ellipse_PointerExited" Tapped="Ellipse_Tapped"  Height="32" Width="32" VerticalAlignment="Center">
                                         <Ellipse.Fill>
                                             <ImageBrush ImageSource="{Binding ThumbnailURL}"/>
                                         </Ellipse.Fill>

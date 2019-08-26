@@ -19,6 +19,8 @@ using Windows.ApplicationModel.DataTransfer;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Shapes;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace App1
 {
@@ -38,7 +40,7 @@ namespace App1
         public MainPage()
         {
             this.InitializeComponent();
-            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView);
+            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
             this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
@@ -97,23 +99,17 @@ namespace App1
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.None)
+            switch (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState)
             {
-                if (this.latestSelectedSong != null)
-                {
-                    this.PlayButton.Content = "\uE769";
-                    this.musicPlayer.PlaySong(this.latestSelectedSong.SongURL);
-                }
-            }
-            else if (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
-            {
-                this.PlayButton.Content = "\uE769";
-                this.musicPlayer.resume();
-            }
-            else
-            {
-                this.PlayButton.Content = "\uE768";
-                this.musicPlayer.PauseSong();
+                case MediaPlaybackState.None:
+                    if (this.latestSelectedSong != null) this.musicPlayer.PlaySong(this.latestSelectedSong.SongURL);            
+                    break;
+                case MediaPlaybackState.Paused:
+                    this.musicPlayer.resume();
+                    break;
+                default:
+                    this.musicPlayer.PauseSong();
+                    break;
             }
         }
 
@@ -232,12 +228,11 @@ namespace App1
 
         private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            this.PlayButton.Content = "\uE769";
             var song = ((sender as Grid).DataContext as Song);
             this.musicPlayer.PlaySong(song.SongURL);
             this.MainListView.SelectedItem = song;
             this.currentlyPlayingPlaylist = this.selectedPlaylist;
-            this.currentlyPlayingSong = song; ;
+            this.currentlyPlayingSong = song;
         }
 
         private async Task<string> InputTextDialogAsync(string title,string buttonText)
@@ -329,6 +324,31 @@ namespace App1
             var type = e.OriginalSource.GetType();
             dynamic tmp = Convert.ChangeType(e.OriginalSource, type);
             flyoutBase.ShowAt(tmp);
+        }
+
+        private void Ellipse_PointerEntered(Object sender, PointerRoutedEventArgs e)
+        {
+            var tmp = new ImageBrush();
+            tmp.ImageSource = new BitmapImage(new Uri(base.BaseUri, @"/Assets/play.png"));
+            (sender as Ellipse).Fill = tmp;                
+        }
+
+        private void Ellipse_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            var ellipse = (sender as Ellipse);
+            var tmp = new ImageBrush();
+            tmp.ImageSource = new BitmapImage(new Uri((ellipse.DataContext as Song).ThumbnailURL));
+            ellipse.Fill = tmp;
+        }
+
+        private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            
+            var song = ((sender as Ellipse).DataContext as Song);
+            this.musicPlayer.PlaySong(song.SongURL);
+            this.MainListView.SelectedItem = song;
+            this.currentlyPlayingPlaylist = this.selectedPlaylist;
+            this.currentlyPlayingSong = song;
         }
     }
 }
