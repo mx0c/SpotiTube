@@ -23,6 +23,15 @@
           "lib/netstandard2.0/LtGt.dll": {}
         }
       },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
+        }
+      },
       "Microsoft.Net.Native.Compiler/2.2.1": {
         "type": "package",
         "dependencies": {
@@ -574,7 +583,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -630,6 +651,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -1493,7 +1523,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -1549,6 +1591,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -2459,7 +2510,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -2515,6 +2578,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -3425,7 +3497,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -3481,6 +3565,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -4344,7 +4437,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -4400,6 +4505,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -5310,7 +5424,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -5366,6 +5492,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -6229,7 +6364,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -6285,6 +6432,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/LtGt.dll": {}
+        }
+      },
+      "MediaToolkit/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/MediaToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MediaToolkit.dll": {}
         }
       },
       "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -7195,7 +7351,19 @@
           "lib/win8/_._": {}
         }
       },
-      "YoutubeExplode/4.7.9": {
+      "VideoLibrary/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {}
+        }
+      },
+      "YoutubeExplode/4.7.10": {
         "type": "package",
         "dependencies": {
           "LtGt": "1.0.1",
@@ -7263,6 +7431,20 @@
         "lib/netstandard2.0/LtGt.xml",
         "ltgt.1.0.1.nupkg.sha512",
         "ltgt.nuspec"
+      ]
+    },
+    "MediaToolkit/1.1.0.1": {
+      "sha512": "xBL3B21uQD4WYqcICEGhz1JHGJ1FZoqU2giHvw8BJYxxv1EnAMHP0GxHxll1euBkLRrOQ14ssFmKSDokkqyWSA==",
+      "type": "package",
+      "path": "mediatoolkit/1.1.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/readme.txt",
+        "lib/net20/MediaToolkit.dll",
+        "lib/net40/MediaToolkit.dll",
+        "mediatoolkit.1.1.0.1.nupkg.sha512",
+        "mediatoolkit.nuspec"
       ]
     },
     "Microsoft.Net.Native.Compiler/2.2.1": {
@@ -13293,10 +13475,22 @@
         "system.threading.tasks.nuspec"
       ]
     },
-    "YoutubeExplode/4.7.9": {
-      "sha512": "rHeOa4Cw7Xx1PtQPOFq/jvSfN4ePUYeUblvc5rFW2vi52x5dFhU/ogO90aD5wJK239PDcrHKYjNVinm3mslhlA==",
+    "VideoLibrary/2.0.3": {
+      "sha512": "XzMwhvzXYp93lIY76hTOZpOe26EO9MOhDuLyAo/8TiFZqNEvFoyadOk0vw+ZF366UPF/gJBV/dEkVuvH42/V2w==",
       "type": "package",
-      "path": "youtubeexplode/4.7.9",
+      "path": "videolibrary/2.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.1/libvideo.dll",
+        "videolibrary.2.0.3.nupkg.sha512",
+        "videolibrary.nuspec"
+      ]
+    },
+    "YoutubeExplode/4.7.10": {
+      "sha512": "dlwh02HHH/57HUaFajP4f5/XnxRoToe0yJzh7BMWpEcGSWCxdZoWk+am1P70lKeX7DAKMdZdJUbhZQhaMmPuIw==",
+      "type": "package",
+      "path": "youtubeexplode/4.7.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -13306,7 +13500,7 @@
         "lib/netstandard1.1/YoutubeExplode.xml",
         "lib/netstandard2.0/YoutubeExplode.dll",
         "lib/netstandard2.0/YoutubeExplode.xml",
-        "youtubeexplode.4.7.9.nupkg.sha512",
+        "youtubeexplode.4.7.10.nupkg.sha512",
         "youtubeexplode.nuspec"
       ]
     },
@@ -13340,9 +13534,11 @@
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.17763": [
+      "MediaToolkit >= 1.1.0.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.2",
       "Newtonsoft.Json >= 12.0.2",
-      "YoutubeExplode >= 4.7.9",
+      "VideoLibrary >= 2.0.3",
+      "YoutubeExplode >= 4.7.10",
       "YoutubeExplode.Converter >= 1.4.3",
       "YoutubeSearch.dll >= 1.1.0"
     ]
@@ -13384,6 +13580,10 @@
     "frameworks": {
       "uap10.0.17763": {
         "dependencies": {
+          "MediaToolkit": {
+            "target": "Package",
+            "version": "[1.1.0.1, )"
+          },
           "Microsoft.NETCore.UniversalWindowsPlatform": {
             "target": "Package",
             "version": "[6.2.2, )"
@@ -13392,9 +13592,13 @@
             "target": "Package",
             "version": "[12.0.2, )"
           },
+          "VideoLibrary": {
+            "target": "Package",
+            "version": "[2.0.3, )"
+          },
           "YoutubeExplode": {
             "target": "Package",
-            "version": "[4.7.9, )"
+            "version": "[4.7.10, )"
           },
           "YoutubeExplode.Converter": {
             "target": "Package",
@@ -13437,6 +13641,16 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"MediaToolkit 1.1.0.1\" wurde nicht mit dem Projektzielframework \"UAP,Version=v10.0.17763\", sondern mit \".NETFramework,Version=v4.6.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "MediaToolkit",
+      "targetGraphs": [
+        "UAP,Version=v10.0.17763"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

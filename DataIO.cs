@@ -11,6 +11,36 @@ namespace SpotiTube
 {
     static class DataIO
     {
+        public async static Task<Setting> readSettings() {
+            StorageFile file;
+            try
+            {
+                file = await ApplicationData.Current.LocalFolder.GetFileAsync("settings.json");
+            }
+            catch (FileNotFoundException)
+            {
+                return await createSettings();
+            }
+            var content = await FileIO.ReadTextAsync(file);
+            Setting setting = JsonConvert.DeserializeObject<Setting>(content);
+            return setting;
+        }
+
+        public async static Task saveSettings(Setting setting) {
+            String json = JsonConvert.SerializeObject(setting);
+            var file = await ApplicationData.Current.LocalFolder.GetFileAsync("settings.json");
+            await FileIO.WriteTextAsync(file, json);
+        }
+
+        private static async Task<Setting> createSettings() {
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("settings.json");
+            var setting = new Setting();
+            setting.downloadPath = ApplicationData.Current.LocalFolder.Path;
+            String json = JsonConvert.SerializeObject(setting);
+            await FileIO.WriteTextAsync(file, json);
+            return setting;
+        }
+
         public async static Task<List<Playlist>> ReadPlaylists()
         {
             StorageFile file;

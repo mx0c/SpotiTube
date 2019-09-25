@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Timers;
 
 namespace App1
 {
@@ -33,42 +34,56 @@ namespace App1
         private Playlist selectedPlaylist;
         private Playlist currentlyPlayingPlaylist;
         private Song currentlyPlayingSong;
-        private bool maximized = false;
         private bool loop = false;
         private bool random = false;
+        private Timer scrollTimer;
 
         public MainPage()
         {
             this.InitializeComponent();
-            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton);
+            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton, this.currPlayingSongRect, this.currPlayingSongLabel);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
             this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
                 if (!this.loop)
                 {
-                    if(random)
-                        this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist,true);
-                    else
-                        this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist);
+                    this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist, random);
                 }
                 else
                 {
-                    this.musicPlayer.PlaySong(this.currentlyPlayingSong.SongURL);
+                    this.musicPlayer.PlaySong(this.currentlyPlayingSong);
                 }
             };
+            Task.Run(() => this.loadSettings()).Wait();   
         }
-      
+
+        private async void loadSettings()
+        {
+            var settings = await DataIO.readSettings();
+            Helper.executeThreadSafe(() =>
+            {
+                this.VolumeSlider.Value = settings.volumePerc;
+            });            
+        }
+
         private async void loadPlaylists()
         {
             try
             {
                 List<Playlist> lists = await DataIO.ReadPlaylists();
-                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                Helper.executeThreadSafe(() =>
                 {
                     foreach (Playlist list in lists)
                     {
                         this.PlaylistList.Items.Add(list);
                     }
+                    //Add first loaded Playlist in MainListView
+                    foreach (Song s in lists[0].Songlist)
+                    {
+                        this.MainListView.Items.Add(s);
+                    }
+                    this.selectedPlaylist = lists[0];
+                    this.PlaylistList.SelectedIndex = 0;
                 });
             }
             catch (NullReferenceException)
@@ -102,7 +117,7 @@ namespace App1
             switch (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState)
             {
                 case MediaPlaybackState.None:
-                    if (this.latestSelectedSong != null) this.musicPlayer.PlaySong(this.latestSelectedSong.SongURL);            
+                    if (this.latestSelectedSong != null) this.musicPlayer.PlaySong(this.latestSelectedSong);            
                     break;
                 case MediaPlaybackState.Paused:
                     this.musicPlayer.resume();
@@ -116,7 +131,7 @@ namespace App1
         private void VolumeSlider_Changed(object sender, RoutedEventArgs e) {
             try
             {
-                this.musicPlayer.adjustVolume(this.VolumeSlider.Value);
+                this.musicPlayer.adjustVolume(this.VolumeSlider.Value);             
             }
             catch (NullReferenceException)
             {
@@ -229,17 +244,18 @@ namespace App1
         private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var song = ((sender as Grid).DataContext as Song);
-            this.musicPlayer.PlaySong(song.SongURL);
+            this.musicPlayer.PlaySong(song);
             this.MainListView.SelectedItem = song;
             this.currentlyPlayingPlaylist = this.selectedPlaylist;
             this.currentlyPlayingSong = song;
         }
 
-        private async Task<string> InputTextDialogAsync(string title,string buttonText)
+        private async Task<string> InputTextDialogAsync(string title, string buttonText, string boxText = "")
         {
             TextBox inputTextBox = new TextBox();
             inputTextBox.AcceptsReturn = false;
             inputTextBox.Height = 32;
+            inputTextBox.Text = boxText;
             ContentDialog dialog = new ContentDialog();
             dialog.Content = inputTextBox;
             dialog.Title = title;
@@ -258,29 +274,7 @@ namespace App1
             this.PlaylistList.Items.Clear();
             this.loadPlaylists();
         }
-
-        private void MaximizeMinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!this.maximized)
-            {
-                Grid.SetColumn(this.mainGrid, 1);
-                Grid.SetColumnSpan(this.mainGrid, 2);
-                Grid.SetColumnSpan(this.navbar, 1);
-                this.navbar.Visibility = Visibility.Collapsed;
-                this.maximizeButton.Visibility = Visibility.Visible;
-                this.maximized = true;
-            }
-            else
-            {
-                Grid.SetColumn(this.mainGrid, 2);
-                Grid.SetColumnSpan(this.navbar, 2);
-                Grid.SetColumnSpan(this.mainGrid, 1);
-                this.navbar.Visibility = Visibility.Visible;
-                this.maximizeButton.Visibility = Visibility.Collapsed;
-                this.maximized = false;
-            }
-        }
-
+    
         private void LoopButton_Click(object sender, RoutedEventArgs e)
         {
             if (!this.loop)
@@ -342,13 +336,64 @@ namespace App1
         }
 
         private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            
+        {        
             var song = ((sender as Ellipse).DataContext as Song);
-            this.musicPlayer.PlaySong(song.SongURL);
+            this.musicPlayer.PlaySong(song);
             this.MainListView.SelectedItem = song;
             this.currentlyPlayingPlaylist = this.selectedPlaylist;
             this.currentlyPlayingSong = song;
+        }
+
+        private void DownloadPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Scrollviewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            scrollTimer = new Timer();
+            scrollTimer.Interval = 50;
+            var forward = true;
+            scrollTimer.Elapsed += (source, args) => {
+                Helper.executeThreadSafe(() =>
+                {
+                    if(forward)
+                        scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset + 1);
+                    else
+                        scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset - 1);
+
+                    if (scrollviewer.HorizontalOffset == scrollviewer.ScrollableWidth)
+                        forward = false;
+                    else if (scrollviewer.HorizontalOffset == 0)
+                        forward = true;
+                });
+            };
+            scrollTimer.Start();
+        }
+
+        private void Scrollviewer_Unloaded(object sender, RoutedEventArgs e)
+        {
+            scrollTimer.Stop();
+        }
+
+        private async void VolumeSlider_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
+        {
+            var setting = await DataIO.readSettings();
+            setting.volumePerc = (int)this.VolumeSlider.Value;
+            await DataIO.saveSettings(setting);
+        }
+
+        private async void DownloadSong_Click(object sender, RoutedEventArgs e)
+        {
+            var song = ((sender as MenuFlyoutItem).DataContext as Song);
+            if (await Downloader.downloadSong(song)) {
+                List<Playlist> plist = await DataIO.ReadPlaylists();
+                this.selectedPlaylist.Songlist.Find(x => x.SongURL == song.SongURL).isDownloaded = true;
+                await DataIO.SavePlaylist(this.selectedPlaylist, this.selectedPlaylist.Title);
+                this.PlaylistList.Items.Clear();
+                this.MainListView.Items.Clear();
+                this.loadPlaylists();
+            }
         }
     }
 }

@@ -126,6 +126,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BooleanToVisibilityConverter.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Setting.cs" />
+    <Compile Include="Downloader.cs" />
     <Compile Include="DataIO.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="MusicPlayer.cs" />
@@ -203,14 +207,20 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MediaToolkit">
+      <Version>1.1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.2</Version>
     </PackageReference>
+    <PackageReference Include="VideoLibrary">
+      <Version>2.0.3</Version>
+    </PackageReference>
     <PackageReference Include="YoutubeExplode">
-      <Version>4.7.9</Version>
+      <Version>4.7.10</Version>
     </PackageReference>
     <PackageReference Include="YoutubeExplode.Converter">
       <Version>1.4.3</Version>

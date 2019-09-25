@@ -104,3 +104,5 @@ C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Spotitube.build.a
 C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\YoutubeSearch.dll
 C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Core\ForBundle\AppxManifest.xml
 C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\Assets\play.png
+C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\MediaToolkit.dll
+C:\Users\mariu\Desktop\projs\Spotitube\Spotitube\bin\x86\Debug\libvideo.dll

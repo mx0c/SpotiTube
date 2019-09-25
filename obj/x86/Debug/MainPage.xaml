@@ -7,68 +7,129 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <local:BooleanToVisibilityConverter x:Key="boolToVis"/>
+    </Page.Resources>
 
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="0.075*"></ColumnDefinition>
-            <ColumnDefinition Width="0.2*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*"></RowDefinition>
-            <RowDefinition Height="4*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition Height="0.75*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="LightGray"></Border>
-        <Border Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="LightGray"></Border>
-
-        <Border Grid.Row="1" Grid.RowSpan="2" Background="LightGray" Visibility="Visible"></Border>
-        <Button x:ConnectionId='2' Grid.Row="1"                                      HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" FontSize="20" Visibility="Collapsed" Name="maximizeButton">&#xEA62;</Button>
-       
-        <Grid x:ConnectionId='3' Name="navbar" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
+        <Grid x:ConnectionId='2' Name="navbar" Grid.Column="0"  Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.075*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button x:ConnectionId='22'                                 Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
-            <Button x:ConnectionId='23'                                      Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE7EA;</Button>
-
-            <ScrollViewer Margin="0 15 0 0" Grid.Row="2" Grid.ColumnSpan="3" >
-                <ListView x:ConnectionId='24' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
+            <Button x:ConnectionId='21'                                 Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
+            
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" >
+                <ListView x:ConnectionId='25' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:ConnectionId='25'                          Name="EditButton" Text="Rename"/>
-                            <MenuFlyoutItem x:ConnectionId='26'                            Text="Delete"/>
+                            <MenuFlyoutItem x:ConnectionId='26'                          Name="EditButton" Text="Rename"/>
+                            <MenuFlyoutItem x:ConnectionId='27'                            Text="Delete"/>
+                            <MenuFlyoutItem x:ConnectionId='28'                                Text="Download"/>
                         </MenuFlyout>
                     </FlyoutBase.AttachedFlyout>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel x:ConnectionId='27' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
+                            <StackPanel x:ConnectionId='29' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
                                 <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Margin="20 0 0 0"></TextBlock>
+                                <TextBlock Name="playlistDownloadedLabel" Visibility="Collapsed" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="65 0 0 0">&#xE896;</TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="#9c9c9c" Padding="10 10 10 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="7*"></RowDefinition>
+                    <RowDefinition Height="3*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Rectangle x:ConnectionId='22' Width="150" Name="currPlayingSongRect" Grid.Row="0"></Rectangle>
+                <ScrollViewer x:ConnectionId='23' x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
+                VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" Grid.Row="1"                             
+                                                >
+                    <TextBlock x:ConnectionId='24' Padding="10 15 10 10"  Name="currPlayingSongLabel" Grid.Row="1"></TextBlock>
+                </ScrollViewer>
+            </Grid>
         </Grid>
 
-        <Grid x:ConnectionId='4' Name="mainGrid"  Grid.Column="2" Grid.RowSpan="5">
+        <TextBox x:ConnectionId='3' Margin="10 0 10 0" Padding="50 5 0 0" Grid.Column="2" Name="SearchBar" IsSpellCheckEnabled="False"                         Background="#66ACACAC" Height="40" VerticalAlignment="Center" FontSize="20"></TextBox>
+        <TextBlock  Margin="20 0 10 0" Grid.Column="2" FontFamily="Segoe MDL2 Assets" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Center">&#xE721;</TextBlock>
+
+        <Border x:ConnectionId='4' Name="Main" Grid.Row="1" Grid.Column="2">
+            <ScrollViewer x:ConnectionId='14' Name="MainViewer">
+                <ListView x:ConnectionId='15'                                        SelectionMode="Single" Name="MainListView"                           IsItemClickEnabled="True">
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:ConnectionId='16'                                Text="Delete"/>
+                            <MenuFlyoutItem x:ConnectionId='17'                            Text="Download" />
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
+                    <ListView.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Name" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="1" Text="Länge" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="2" Text="hinzugefügt am" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="3" Text="downloaded" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.HeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:ConnectionId='19'                                  Height="48" CanDrag="True"                                 >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="450"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Ellipse x:ConnectionId='20'                                                                                                         Height="32" Width="32" VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding ThumbnailURL}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" Padding="10 0 30 0" />
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding duration}"/>
+                                <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding addedAt}"/>
+                                <TextBlock Grid.Column="4" Visibility="{Binding Path=isDownloaded, Converter={StaticResource boolToVis}}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE896;"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Border>
+
+        <Grid Background="#9c9c9c" Grid.Row="2" Grid.Column="2" Grid.RowSpan="5">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"></RowDefinition>
-                <RowDefinition Height="4*"></RowDefinition>
-                <RowDefinition Height="0.3*"></RowDefinition>
-                <RowDefinition Height="0.75*"></RowDefinition>
-                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
@@ -84,69 +145,17 @@
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border x:ConnectionId='5' Name="Main" Grid.Row="1" Grid.ColumnSpan="11" Grid.RowSpan="2">
-                <ScrollViewer x:ConnectionId='16' Name="MainViewer">
-                    <ListView x:ConnectionId='17'                                        SelectionMode="Single" Name="MainListView"                           IsItemClickEnabled="True">
-                        <FlyoutBase.AttachedFlyout>
-                        <MenuFlyout>
-                                <MenuFlyoutItem x:ConnectionId='18'                                Text="Delete"/>
-                        </MenuFlyout>
-                        </FlyoutBase.AttachedFlyout>
-                        <ListView.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="548"/>
-                                        <ColumnDefinition Width="75"/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Name" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                    <TextBlock Grid.Column="1" Text="Länge" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                    <TextBlock Grid.Column="2" Text="hinzugefügt am" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.HeaderTemplate>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid x:ConnectionId='20'                                  Height="48" CanDrag="True"                                 >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="48"/>
-                                        <ColumnDefinition Width="500"/>
-                                        <ColumnDefinition Width="75"/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Ellipse x:ConnectionId='21'                                                                                                         Height="32" Width="32" VerticalAlignment="Center">
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{Binding ThumbnailURL}"/>
-                                        </Ellipse.Fill>
-                                    </Ellipse>
-                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}"  Padding="10 0 30 0" />
-                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding duration}"/>
-                                    <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding addedAt}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </ScrollViewer>
-            </Border>
-
-            <Border Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="11" Background="LightGray"></Border>
-            <Border Grid.ColumnSpan="11" Background="LightGray"></Border>
-            
-            <TextBox x:ConnectionId='6'  Name="SearchBar"                         Padding="50 5 0 0" CornerRadius="10" Margin="0 10 10 10" Grid.Column="0" Grid.ColumnSpan="11" Background="#66ACACAC" Height="40" VerticalAlignment="Top" FontSize="20"></TextBox>
-            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="25" Margin="10 18 0 0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">&#xE721;</TextBlock>
-            <Button x:ConnectionId='7' Height="40" Name="randomButton"                            Content="&#xE8B1;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button x:ConnectionId='8' Height="40" Name="loopButton"                           Content="&#xE8EE;" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button x:ConnectionId='9' Height="50"                          HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="3" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button x:ConnectionId='10' Height="50" Name="PlayButton"                          HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="3" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button x:ConnectionId='11' Height="50"                           HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="3" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <TextBlock Grid.Row="3" Grid.Column="8" FontFamily="Segoe MDL2 Assets" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">&#xE994;</TextBlock>
-            <Slider x:ConnectionId='12' Value="50" Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="3"                                     Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-            <Slider x:ConnectionId='13' Maximum="100" Minimum="0" Name="TimeSlider" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-            <TextBlock x:ConnectionId='14' Name="CurrentTime" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center">0:00</TextBlock>
-            <TextBlock x:ConnectionId='15' Name="CurrentDuration" Grid.Row="9" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center">0:00</TextBlock>
+            <Button x:ConnectionId='5' Height="40" Name="randomButton"                            Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button x:ConnectionId='6' Height="40" Name="loopButton"                           Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button x:ConnectionId='7' Height="50"                          HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="0" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button x:ConnectionId='8' Height="50" Name="PlayButton"                          HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="0" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button x:ConnectionId='9' Height="50"                           HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="0" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <TextBlock Grid.Row="0" Grid.Column="8" FontFamily="Segoe MDL2 Assets" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">&#xE994;</TextBlock>
+            <Slider x:ConnectionId='10' Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="0"                                                                                           Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+            <Slider x:ConnectionId='11' Maximum="100" Minimum="0" Name="TimeSlider" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <TextBlock x:ConnectionId='12' Name="CurrentTime" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">0:00</TextBlock>
+            <TextBlock x:ConnectionId='13' Name="CurrentDuration" Grid.Row="1" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center">0:00</TextBlock>
         </Grid>
     </Grid>
-
 </Page>
 

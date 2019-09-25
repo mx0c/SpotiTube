@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace SpotiTube
 {
-
     public class Song
     {
         public String Title { get; set; }
@@ -14,6 +13,7 @@ namespace SpotiTube
         public String ThumbnailURL { get; set; }
         public String addedAt { get; set; }
         public String duration { get; set; }
+        public Boolean isDownloaded { get; set; }
 
         public Song(String Title, String songUrl, String addedAt, String ThumbnailURL, String duration)
         {
@@ -22,10 +22,11 @@ namespace SpotiTube
             this.addedAt = addedAt;
             this.ThumbnailURL = ThumbnailURL;
             this.duration = duration;
+            this.isDownloaded = false;
         }
     }
 
-    class Playlist
+    public class Playlist
     {
         public String Title { get; set; }
         public List<Song> Songlist { get; set; }

@@ -12,6 +12,10 @@ using Windows.Media.Playback;
 using Windows.UI.Xaml.Controls;
 using System.Timers;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
+using Windows.Storage;
 
 namespace SpotiTube
 {
@@ -27,19 +31,23 @@ namespace SpotiTube
         private Slider timeSlider;
         private ListView MainListView;
         private Button playButton;
+        private TextBlock currPlayingLabel;
+        private Rectangle currPlayingRect;
 
-        public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList, Button playButton) {
+        public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList, Button playButton, Rectangle currRect, TextBlock currLabel) {
             this.currentDuration = CurrentDuration;
             this.currentTime = CurrentTime;
             this.timeSlider = TimeSlider;
             this.MainListView = mainList;
             this.playButton = playButton;
+            this.currPlayingRect = currRect;
+            this.currPlayingLabel = currLabel;
 
-            this.mPlayer.CurrentStateChanged += async (player, obj) => {
-                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            this.mPlayer.CurrentStateChanged += (player, obj) => {
+                Helper.executeThreadSafe(() =>
                 {
                     if (player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused || player.PlaybackSession.PlaybackState == MediaPlaybackState.Opening ||
-                player.PlaybackSession.PlaybackState == MediaPlaybackState.None)
+                    player.PlaybackSession.PlaybackState == MediaPlaybackState.None)
                     {
                         this.playButton.Content = "\uE768";
                     }
@@ -56,10 +64,10 @@ namespace SpotiTube
             this.clock.Enabled = true;
         }
 
-        public async void onTimerEvent(object source, ElapsedEventArgs e) {
+        public void onTimerEvent(object source, ElapsedEventArgs e) {
             if (this.mPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
             {
-                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                Helper.executeThreadSafe(() =>
                 { 
                     this.currentTime.Text = $"{this.mPlayer.PlaybackSession.Position.Minutes}:{this.mPlayer.PlaybackSession.Position.Seconds.ToString("D2")}";
                     this.currentDuration.Text = $"{this.mPlayer.PlaybackSession.NaturalDuration.Minutes}:{this.mPlayer.PlaybackSession.NaturalDuration.Seconds.ToString("D2")}";
@@ -77,12 +85,12 @@ namespace SpotiTube
             return audioStreamInfo.Url;
         }
 
-        public void skipSong(bool direction, ref Song currentSong, Playlist currentPlaylist,bool random = false)
+        public void skipSong(bool direction, ref Song currentSong, Playlist currentPlaylist, bool random = false)
         {
             if (currentPlaylist == null) return;
             if (random) {
                 var randInt = new Random().Next(0, currentPlaylist.Songlist.Count);
-                this.PlaySong(currentPlaylist.Songlist[randInt].SongURL);
+                this.PlaySong(currentPlaylist.Songlist[randInt]);
                 this.MainListView.SelectedItem = currentPlaylist.Songlist[randInt];
                 return;
             }
@@ -95,15 +103,19 @@ namespace SpotiTube
             {
                 if (i == currentPlaylist.Songlist.Count-1)
                     i = -1;
-                this.PlaySong(currentPlaylist.Songlist[++i].SongURL);
+                this.PlaySong(currentPlaylist.Songlist[++i]);
             }
             else {
                 if (i == 0)
                     i = 1;
-                this.PlaySong(currentPlaylist.Songlist[--i].SongURL);
+                this.PlaySong(currentPlaylist.Songlist[--i]);
             }
             currentSong = currentPlaylist.Songlist[i];
-            this.MainListView.SelectedItem = currentSong;
+            temp = currentSong;
+            Helper.executeThreadSafe(() =>
+            {
+                this.MainListView.SelectedItem = temp;
+            });
         }
 
         public void PauseSong()
@@ -120,11 +132,31 @@ namespace SpotiTube
             this.mPlayer.Volume = percentage / 100.0;
         }
 
-        public async void PlaySong(String youtubeURL)
+        public async void PlaySong(Song song)
         {
-            var stream = await this.GetAudioStream(youtubeURL); 
-            this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));      
-            this.mPlayer.Play();
+            if (song.isDownloaded)
+            {
+                StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(song.Title + ".mp3");
+                this.mPlayer.Source = MediaSource.CreateFromStorageFile(sf);
+                this.mPlayer.Play();
+            }
+            else
+            {
+                var stream = await this.GetAudioStream(song.SongURL);
+                this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));
+                this.mPlayer.Play();
+            }
+
+            try
+            {
+                this.currPlayingRect.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(song.ThumbnailURL)) };
+            }
+            catch { }
+
+            Helper.executeThreadSafe(() =>
+            {
+                this.currPlayingLabel.Text = song.Title;
+            });
         }
 
         public void seek(double percentage)
