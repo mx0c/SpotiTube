@@ -128,10 +128,9 @@
     </Compile>
     <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Setting.cs" />
     <Compile Include="Downloader.cs" />
     <Compile Include="DataIO.cs" />
-    <Compile Include="Playlist.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="MusicPlayer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

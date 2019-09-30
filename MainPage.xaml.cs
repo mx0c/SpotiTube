@@ -22,6 +22,8 @@ using Windows.UI.Core;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Timers;
+using System.Collections.ObjectModel;
+using Windows.UI.ViewManagement;
 
 namespace App1
 {
@@ -29,9 +31,9 @@ namespace App1
     {
         private MusicPlayer musicPlayer;
         private Song latestSelectedSong;
-        private List<Song> selectedSongs = new List<Song>();
         private Song draggedSong;
         private Playlist selectedPlaylist;
+        private ObservableCollection<Song> mainListViewItemSource;
         private Playlist currentlyPlayingPlaylist;
         private Song currentlyPlayingSong;
         private bool loop = false;
@@ -41,6 +43,7 @@ namespace App1
         public MainPage()
         {
             this.InitializeComponent();
+            this.mainListViewItemSource = new ObservableCollection<Song>();
             this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton, this.currPlayingSongRect, this.currPlayingSongLabel);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
@@ -69,21 +72,23 @@ namespace App1
         private async void loadPlaylists()
         {
             try
-            {
-                List<Playlist> lists = await DataIO.ReadPlaylists();
+            {  
+                ObservableCollection<Playlist> lists = await DataIO.ReadPlaylists();
                 Helper.executeThreadSafe(() =>
                 {
-                    foreach (Playlist list in lists)
-                    {
-                        this.PlaylistList.Items.Add(list);
-                    }
-                    //Add first loaded Playlist in MainListView
-                    foreach (Song s in lists[0].Songlist)
-                    {
-                        this.MainListView.Items.Add(s);
-                    }
+                    
                     this.selectedPlaylist = lists[0];
+                    this.MainListView.ItemsSource =  this.mainListViewItemSource;
+                    mainListViewItemSource.Clear();
+                    PlaylistList.ItemsSource = lists;
                     this.PlaylistList.SelectedIndex = 0;
+
+                    if (lists[0].Songlist == null)
+                        return;
+
+                    foreach (Song s in this.selectedPlaylist.Songlist) {
+                        this.mainListViewItemSource.Add(s);
+                    }   
                 });
             }
             catch (NullReferenceException)
@@ -147,15 +152,13 @@ namespace App1
         private void SearchBar_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                this.MainListView.Items.Clear();
-                if (this.selectedSongs !=  null)
-                    this.selectedSongs.Clear();
-
+            {            
                 var items = new VideoSearch();
+                this.mainListViewItemSource.Clear();               
                 foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
                 {
-                    this.MainListView.Items.Add(new Song(item.Title,item.Url,"none",item.Thumbnail,item.Duration));                  
+                    var s = new Song(item.Title, item.Url, "none", Helper.ImageURLToBase64(item.Thumbnail), item.Duration);
+                    this.mainListViewItemSource.Add(s);
                 }
             }
         }
@@ -163,12 +166,11 @@ namespace App1
         private void onItemClicked(object sender, ItemClickEventArgs e)
         {
             this.latestSelectedSong = (Song)e.ClickedItem;
-            this.selectedSongs.Add((Song)e.ClickedItem);
         }
 
         private async void AddPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            String plName = await this.InputTextDialogAsync("Playlist name", "Add");
+            String plName = await Helper.InputTextDialogAsync("Playlist name", "Add");
             if (plName == "")
                 return;
             var npl = new Playlist { Title = plName };
@@ -179,15 +181,16 @@ namespace App1
 
         private void PlaylistList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            this.MainListView.Items.Clear();
             var playlist = (Playlist)e.ClickedItem;
             this.selectedPlaylist = playlist;
-            if (playlist.Songlist == null)
-                //wenn keine songs enthalten
+            this.mainListViewItemSource.Clear();
+            
+            if (this.selectedPlaylist.Songlist == null)
                 return;
-            foreach (var song in playlist.Songlist)
+
+            foreach (Song s in this.selectedPlaylist.Songlist)
             {
-                this.MainListView.Items.Add(song);
+                this.mainListViewItemSource.Add(s);
             }
         }
 
@@ -209,7 +212,7 @@ namespace App1
             }
             else
             {
-                pl.Songlist = new List<Song>();
+                pl.Songlist = new ObservableCollection<Song>();
                 pl.Songlist.Add(this.draggedSong);
             }
             await DataIO.SavePlaylist(pl);
@@ -233,11 +236,10 @@ namespace App1
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            String nTitle = await this.InputTextDialogAsync("Rename Playlist", "Rename");
+            String nTitle = await Helper.InputTextDialogAsync("Rename Playlist", "Rename");
             String oldTitle = this.selectedPlaylist.Title;
             this.selectedPlaylist.Title = nTitle;
             await DataIO.SavePlaylist(this.selectedPlaylist, oldTitle);
-            this.PlaylistList.Items.Clear();
             this.loadPlaylists();
         }
 
@@ -248,24 +250,6 @@ namespace App1
             this.MainListView.SelectedItem = song;
             this.currentlyPlayingPlaylist = this.selectedPlaylist;
             this.currentlyPlayingSong = song;
-        }
-
-        private async Task<string> InputTextDialogAsync(string title, string buttonText, string boxText = "")
-        {
-            TextBox inputTextBox = new TextBox();
-            inputTextBox.AcceptsReturn = false;
-            inputTextBox.Height = 32;
-            inputTextBox.Text = boxText;
-            ContentDialog dialog = new ContentDialog();
-            dialog.Content = inputTextBox;
-            dialog.Title = title;
-            dialog.IsSecondaryButtonEnabled = true;
-            dialog.PrimaryButtonText = buttonText;
-            dialog.SecondaryButtonText = "Cancel";
-            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                return inputTextBox.Text;
-            else
-                return "";
         }
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -308,7 +292,7 @@ namespace App1
             var toDelete = (sender as MenuFlyoutItem).DataContext as Song;
             this.selectedPlaylist.Songlist.Remove(toDelete);
             await DataIO.SavePlaylist(this.selectedPlaylist);
-            this.MainListView.Items.Remove(toDelete);
+            this.mainListViewItemSource.Remove(toDelete);
         }
 
         private void MainListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
@@ -327,11 +311,11 @@ namespace App1
             (sender as Ellipse).Fill = tmp;                
         }
 
-        private void Ellipse_PointerExited(object sender, PointerRoutedEventArgs e)
+        private async void Ellipse_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             var ellipse = (sender as Ellipse);
             var tmp = new ImageBrush();
-            tmp.ImageSource = new BitmapImage(new Uri((ellipse.DataContext as Song).ThumbnailURL));
+            tmp.ImageSource = await Helper.base64toBmp((ellipse.DataContext as Song).ThumbnailBase64);
             ellipse.Fill = tmp;
         }
 
@@ -386,14 +370,33 @@ namespace App1
         private async void DownloadSong_Click(object sender, RoutedEventArgs e)
         {
             var song = ((sender as MenuFlyoutItem).DataContext as Song);
-            if (await Downloader.downloadSong(song)) {
-                List<Playlist> plist = await DataIO.ReadPlaylists();
-                this.selectedPlaylist.Songlist.Find(x => x.SongURL == song.SongURL).isDownloaded = true;
-                await DataIO.SavePlaylist(this.selectedPlaylist, this.selectedPlaylist.Title);
-                this.PlaylistList.Items.Clear();
-                this.MainListView.Items.Clear();
-                this.loadPlaylists();
+            var songItem = this.mainListViewItemSource.Where(s => s.SongURL == song.SongURL).FirstOrDefault();
+
+            if (songItem.isDownloaded || songItem.isDownloading)
+                return;
+
+            var i = this.mainListViewItemSource.IndexOf(songItem);
+
+            songItem.isDownloading = true;
+            mainListViewItemSource.RemoveAt(i);
+            mainListViewItemSource.Insert(i, songItem);
+
+            var progHandler = new Progress<double>(p => songItem.downloadProgress = p * 100.0);
+
+            if (await Downloader.downloadSong(song, progHandler)) {
+                songItem.isDownloaded = true;
+                songItem.isDownloading = false;
+                this.selectedPlaylist.Songlist.RemoveAt(i);
+                this.selectedPlaylist.Songlist.Insert(i, songItem);
+                await DataIO.SavePlaylist(this.selectedPlaylist);
+                mainListViewItemSource.RemoveAt(i);
+                mainListViewItemSource.Insert(i, songItem);
             }
+        }
+
+        private void Ellipse_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

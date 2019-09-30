@@ -4,11 +4,13 @@
     <RootInterface FullName="Windows.UI.Xaml.Data.IValueConverter" />
   </Roots.Interfaces>
   <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="isDownloading" />
+    <RootPropertyPathName Name="downloadProgress" />
     <RootPropertyPathName Name="isDownloaded" />
     <RootPropertyPathName Name="addedAt" />
     <RootPropertyPathName Name="duration" />
     <RootPropertyPathName Name="Title" />
-    <RootPropertyPathName Name="ThumbnailURL" />
+    <RootPropertyPathName Name="Thumbnail" />
     <RootPropertyPathName Name="plStackpanel" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
@@ -28,7 +30,6 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Background" />
-      <RootProperty Name="Padding" />
       <RootProperty Name="Height" />
       <RootProperty Name="CanDrag" />
       <RootEvent Name="DoubleTapped" />
@@ -47,6 +48,9 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.RowDefinition">
       <RootProperty Name="Height" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Canvas">
+      <RootProperty Name="Background" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
       <RootProperty Name="Name" />
@@ -67,8 +71,8 @@
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Inlines" />
       <RootProperty Name="Name" />
-      <RootProperty Name="Text" />
       <RootProperty Name="Style" />
+      <RootProperty Name="Text" />
       <RootProperty Name="Padding" />
       <RootProperty Name="Visibility" />
     </RootType>
@@ -99,6 +103,7 @@
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
       <RootProperty Name="Name" />
       <RootProperty Name="Content" />
+      <RootProperty Name="Padding" />
       <RootProperty Name="VerticalScrollBarVisibility" />
       <RootProperty Name="HorizontalScrollBarVisibility" />
       <RootProperty Name="VerticalScrollMode" />
@@ -108,9 +113,9 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
       <RootProperty Name="Name" />
+      <RootProperty Name="ItemsSource" />
       <RootProperty Name="SelectionMode" />
       <RootProperty Name="IsItemClickEnabled" />
-      <RootProperty Name="HeaderTemplate" />
       <RootProperty Name="ItemTemplate" />
       <RootProperty Name="DataContext" />
       <RootEvent Name="RightTapped" />
@@ -136,9 +141,16 @@
       <RootProperty Name="Width" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Fill" />
+      <RootEvent Name="Loaded" />
       <RootEvent Name="PointerEntered" />
       <RootEvent Name="PointerExited" />
       <RootEvent Name="Tapped" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.ProgressBar">
+      <RootProperty Name="Visibility" />
+      <RootProperty Name="Value" />
+      <RootProperty Name="Minimum" />
+      <RootProperty Name="Maximum" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
       <RootProperty Name="Path" />

@@ -58,33 +58,34 @@
                 </ListView>
             </ScrollViewer>
 
-            <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="#9c9c9c" Padding="10 10 10 10">
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="7*"></RowDefinition>
-                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="7.5*"></RowDefinition>
+                    <RowDefinition Height="2.5*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Rectangle Width="150" Name="currPlayingSongRect" Grid.Row="0"></Rectangle>
-                <ScrollViewer x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
+                <Rectangle Width="auto" Name="currPlayingSongRect" Grid.Row="0"></Rectangle>
+                <ScrollViewer Padding="10 0 10 0" x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" Grid.Row="1" Loaded="Scrollviewer_Loaded"
                 Unloaded="Scrollviewer_Unloaded">
-                    <TextBlock Padding="10 15 10 10"  Name="currPlayingSongLabel" Grid.Row="1"></TextBlock>
+                <TextBlock Padding="0 8 0 0"  Name="currPlayingSongLabel" Grid.Row="1"></TextBlock>
                 </ScrollViewer>
             </Grid>
         </Grid>
 
+        <Canvas Grid.Column="1" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}"></Canvas>
         <TextBox Margin="10 0 10 0" Padding="50 5 0 0" Grid.Column="2" Name="SearchBar" IsSpellCheckEnabled="False" KeyUp="SearchBar_KeyUp" Background="#66ACACAC" Height="40" VerticalAlignment="Center" FontSize="20"></TextBox>
         <TextBlock  Margin="20 0 10 0" Grid.Column="2" FontFamily="Segoe MDL2 Assets" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Center">&#xE721;</TextBlock>
-
+        
         <Border Name="Main" Grid.Row="1" Grid.Column="2">
             <ScrollViewer Name="MainViewer">
-                <ListView RightTapped="MainListView_RightTapped" SelectionMode="Single" Name="MainListView" ItemClick="onItemClicked" IsItemClickEnabled="True">
+                <ListView ItemsSource="displayedSongs" RightTapped="MainListView_RightTapped" SelectionMode="Single" Name="MainListView" ItemClick="onItemClicked" IsItemClickEnabled="True">
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem Click="DeleteSongButton_Click" Text="Delete"/>
                             <MenuFlyoutItem Click="DownloadSong_Click" Text="Download" />
                         </MenuFlyout>
                     </FlyoutBase.AttachedFlyout>
-                    <ListView.HeaderTemplate>
+                    <!--<ListView.HeaderTemplate>
                         <DataTemplate>
                             <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
                                 <Grid.ColumnDefinitions>
@@ -99,7 +100,7 @@
                                 <TextBlock Grid.Column="3" Text="downloaded" Style="{ThemeResource CaptionTextBlockStyle}"/>
                             </Grid>
                         </DataTemplate>
-                    </ListView.HeaderTemplate>
+                    </ListView.HeaderTemplate>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid DoubleTapped="Grid_DoubleTapped" Height="48" CanDrag="True" DragStarting="Grid_DragStarting">
@@ -110,15 +111,16 @@
                                     <ColumnDefinition Width="125"/>
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
-                                <Ellipse  PointerEntered="Ellipse_PointerEntered" PointerExited="Ellipse_PointerExited" Tapped="Ellipse_Tapped"  Height="32" Width="32" VerticalAlignment="Center">
+                                <Ellipse Loaded="Ellipse_Loaded" PointerEntered="Ellipse_PointerEntered" PointerExited="Ellipse_PointerExited" Tapped="Ellipse_Tapped"  Height="32" Width="32" VerticalAlignment="Center">
                                     <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{Binding ThumbnailURL}"/>
+                                        <ImageBrush ImageSource="{Binding Thumbnail}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" Padding="10 0 30 0" />
                                 <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding duration}"/>
                                 <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding addedAt}"/>
                                 <TextBlock Grid.Column="4" Visibility="{Binding Path=isDownloaded, Converter={StaticResource boolToVis}}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE896;"/>
+                                <ProgressBar Grid.Column="4" Visibility="{Binding Path=isDownloading, Converter={StaticResource boolToVis}}" Value="{Binding downloadProgress}" Minimum="0" Maximum="100"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

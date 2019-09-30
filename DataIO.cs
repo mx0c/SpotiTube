@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using Windows.Storage;
+using System.Collections.ObjectModel;
 
 namespace SpotiTube
 {
@@ -41,7 +42,7 @@ namespace SpotiTube
             return setting;
         }
 
-        public async static Task<List<Playlist>> ReadPlaylists()
+        public async static Task<ObservableCollection<Playlist>> ReadPlaylists()
         {
             StorageFile file;
             try
@@ -53,16 +54,16 @@ namespace SpotiTube
             }
             var content = await FileIO.ReadTextAsync(file);
             var jArr = (Newtonsoft.Json.Linq.JArray)JsonConvert.DeserializeObject(content);
-            List<Playlist> playlists = jArr.ToObject<List<Playlist>>();
+            ObservableCollection<Playlist> playlists = jArr.ToObject<ObservableCollection<Playlist>>();
             return playlists;
         }
 
-        private static async Task<List<Playlist>> createPlaylist()
+        private static async Task<ObservableCollection<Playlist>> createPlaylist()
         {
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("playlists.json");
             var newPlaylist = new Playlist();
             newPlaylist.Title = "new Playlist";
-            List<Playlist> ret = new List<Playlist>();
+            ObservableCollection<Playlist> ret = new ObservableCollection<Playlist>();
             ret.Add(newPlaylist);
             String json = JsonConvert.SerializeObject(ret);
             await FileIO.WriteTextAsync(file, json);
@@ -72,8 +73,8 @@ namespace SpotiTube
         public async static Task RemovePlaylist(string name)
         {
             var allPlayLists = await ReadPlaylists();
-            var i = allPlayLists.FindIndex(x => x.Title == name);
-            allPlayLists.RemoveAt(i);
+            var i = allPlayLists.Where(x => x.Title == name).FirstOrDefault();
+            allPlayLists.Remove(i);
             String json = JsonConvert.SerializeObject(allPlayLists);
             var file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
             await FileIO.WriteTextAsync(file, json);
@@ -85,9 +86,9 @@ namespace SpotiTube
             int i;
 
             if (overridePListTitle == null)
-                i = allPlayLists.FindIndex(x => x.Title == pList.Title);
+                i = allPlayLists.IndexOf(allPlayLists.Where(x => x.Title == pList.Title).FirstOrDefault());
             else
-                i = allPlayLists.FindIndex(x => x.Title == overridePListTitle);
+                i = allPlayLists.IndexOf(allPlayLists.Where(x => x.Title == overridePListTitle).FirstOrDefault());
 
             if (i == -1)
                 //neue Playlist anlegen

@@ -71,7 +71,11 @@ namespace SpotiTube
                 { 
                     this.currentTime.Text = $"{this.mPlayer.PlaybackSession.Position.Minutes}:{this.mPlayer.PlaybackSession.Position.Seconds.ToString("D2")}";
                     this.currentDuration.Text = $"{this.mPlayer.PlaybackSession.NaturalDuration.Minutes}:{this.mPlayer.PlaybackSession.NaturalDuration.Seconds.ToString("D2")}";
-                    this.timeSlider.Value = this.mPlayer.PlaybackSession.Position.TotalSeconds / (this.mPlayer.PlaybackSession.NaturalDuration.TotalSeconds / 100.0);
+                    try
+                    {
+                        this.timeSlider.Value = this.mPlayer.PlaybackSession.Position.TotalSeconds / (this.mPlayer.PlaybackSession.NaturalDuration.TotalSeconds / 100.0);
+                    }
+                    catch (Exception) { }
                 });
             }
         }
@@ -96,7 +100,7 @@ namespace SpotiTube
             }
 
             var temp = currentSong;
-            var i = currentPlaylist.Songlist.FindIndex(x => x == temp);
+            var i = currentPlaylist.Songlist.IndexOf(currentPlaylist.Songlist.Where(x => x == temp).FirstOrDefault());
 
             //right
             if (direction)
@@ -136,7 +140,7 @@ namespace SpotiTube
         {
             if (song.isDownloaded)
             {
-                StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(song.Title + ".mp3");
+                StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(song.DownloadTitle + ".mp3");
                 this.mPlayer.Source = MediaSource.CreateFromStorageFile(sf);
                 this.mPlayer.Play();
             }
@@ -149,7 +153,9 @@ namespace SpotiTube
 
             try
             {
-                this.currPlayingRect.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(song.ThumbnailURL)) };
+                this.currPlayingRect.Fill = new ImageBrush {
+                    ImageSource = await Helper.base64toBmp(song.ThumbnailBase64)
+                };
             }
             catch { }
 
