@@ -10,12 +10,7 @@
     
     <Page.Resources>
         <local:BooleanToVisibilityConverter x:Key="boolToVis"/>
-        <local:ImageConverter x:Key="ImageConverter" />
-        <Style x:Key="GridViewItemStyle" TargetType="Grid">
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
+        <local:ImageConverter x:Key="ImageConverter"/>
     </Page.Resources>
 
     <Grid x:ConnectionId='2'                               >
@@ -43,7 +38,7 @@
 
             <Button x:ConnectionId='21'                                 Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
             
-            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" >
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
                 <ListView x:ConnectionId='25' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
@@ -73,7 +68,7 @@
                 <ScrollViewer x:ConnectionId='23' Padding="10 0 10 0" x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" Grid.Row="1"                             
                                                 >
-                <TextBlock x:ConnectionId='24' Padding="0 8 0 0"  Name="currPlayingSongLabel" Grid.Row="1"></TextBlock>
+                <TextBlock x:ConnectionId='24' Padding="0 5 0 0" Name="currPlayingSongLabel" Grid.Row="1"></TextBlock>
                 </ScrollViewer>
             </Grid>
         </Grid>
@@ -109,7 +104,7 @@
                     </ListView.HeaderTemplate>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid x:ConnectionId='19' Margin="-10 2 0 2" Padding="0 1 0 1" Style="{StaticResource GridViewItemStyle}"                                  Height="40" CanDrag="True"                                 >
+                            <Grid x:ConnectionId='19' Margin="-9 2 0 2" Padding="0 1 0 1"                                  Height="40" CanDrag="True"                                 >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="450"/>

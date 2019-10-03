@@ -43,9 +43,7 @@ namespace SpotiTube
         public String Title { get; set; }
         public String DownloadTitle { get; set; }
         public String SongURL { get; set; }
-        [JsonIgnore]
         private String _Thumbnail { get; set; }
-        [JsonIgnore]
         public String Thumbnail {
             get { return _Thumbnail; }
             set {

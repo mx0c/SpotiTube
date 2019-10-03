@@ -63,7 +63,7 @@ namespace App1
         private async void loadSettings()
         {
             var settings = await DataIO.readSettings();
-            Helper.executeThreadSafe(() =>
+            Helper.executeInUiThread(() =>
             {
                 this.VolumeSlider.Value = settings.volumePerc;
             });            
@@ -74,13 +74,17 @@ namespace App1
             try
             {  
                 ObservableCollection<Playlist> lists = await DataIO.ReadPlaylists();
-                Helper.executeThreadSafe(() =>
+                Helper.executeInUiThread(() =>
                 {
                     
                     this.selectedPlaylist = lists[0];
                     this.MainListView.ItemsSource =  this.mainListViewItemSource;
                     mainListViewItemSource.Clear();
-                    PlaylistList.ItemsSource = lists;
+
+                    PlaylistList.Items.Clear();
+                    foreach (Playlist pl in lists) {
+                        PlaylistList.Items.Add(pl);
+                    }
                     this.PlaylistList.SelectedIndex = 0;
 
                     if (lists[0].Songlist == null)
@@ -255,7 +259,7 @@ namespace App1
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             await DataIO.RemovePlaylist(this.selectedPlaylist.Title);
-            this.PlaylistList.Items.Clear();
+            Helper.executeInUiThread(()=>this.PlaylistList.Items.Clear());
             this.loadPlaylists();
         }
     
@@ -340,7 +344,7 @@ namespace App1
             scrollTimer.Interval = 50;
             var forward = true;
             scrollTimer.Elapsed += (source, args) => {
-                Helper.executeThreadSafe(() =>
+                Helper.executeInUiThread(() =>
                 {
                     if(forward)
                         scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset + 1);

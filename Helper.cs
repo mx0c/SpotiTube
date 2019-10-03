@@ -13,7 +13,7 @@ namespace SpotiTube
 {
     static class Helper
     {
-        public static async void executeThreadSafe(Action function)
+        public static async void executeInUiThread(Action function)
         {
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {

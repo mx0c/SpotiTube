@@ -44,7 +44,7 @@ namespace SpotiTube
             this.currPlayingLabel = currLabel;
 
             this.mPlayer.CurrentStateChanged += (player, obj) => {
-                Helper.executeThreadSafe(() =>
+                Helper.executeInUiThread(() =>
                 {
                     if (player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused || player.PlaybackSession.PlaybackState == MediaPlaybackState.Opening ||
                     player.PlaybackSession.PlaybackState == MediaPlaybackState.None)
@@ -67,7 +67,7 @@ namespace SpotiTube
         public void onTimerEvent(object source, ElapsedEventArgs e) {
             if (this.mPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
             {
-                Helper.executeThreadSafe(() =>
+                Helper.executeInUiThread(() =>
                 { 
                     this.currentTime.Text = $"{this.mPlayer.PlaybackSession.Position.Minutes}:{this.mPlayer.PlaybackSession.Position.Seconds.ToString("D2")}";
                     this.currentDuration.Text = $"{this.mPlayer.PlaybackSession.NaturalDuration.Minutes}:{this.mPlayer.PlaybackSession.NaturalDuration.Seconds.ToString("D2")}";
@@ -117,7 +117,7 @@ namespace SpotiTube
             currentSong = currentPlaylist.Songlist[i];
             temp = currentSong;
 
-            Helper.executeThreadSafe(() =>
+            Helper.executeInUiThread(() =>
             {
                 this.MainListView.SelectedItem = temp;
             });
@@ -152,7 +152,7 @@ namespace SpotiTube
                 this.mPlayer.Play();
             }
 
-            Helper.executeThreadSafe(() =>
+            Helper.executeInUiThread(() =>
             {
                 this.currPlayingRect.Fill = new ImageBrush
                 {
