@@ -37,23 +37,16 @@ namespace SpotiTube
             this.isDownloaded = false;
             this.isDownloading = false;
             this._downloadProgress = 0;
-            this.ThumbnailBase64 = thumbnailBase64;
-
-            Helper.executeThreadSafe(()=>this.init());
+            this.Thumbnail = thumbnailBase64;
         }
-
-        public async void init() {
-            this.Thumbnail = await Helper.base64toBmp(this.ThumbnailBase64);           
-        }
-      
+    
         public String Title { get; set; }
         public String DownloadTitle { get; set; }
         public String SongURL { get; set; }
-        public String ThumbnailBase64 { get; set; }
         [JsonIgnore]
-        private BitmapImage _Thumbnail { get; set; }
+        private String _Thumbnail { get; set; }
         [JsonIgnore]
-        public BitmapImage Thumbnail {
+        public String Thumbnail {
             get { return _Thumbnail; }
             set {
                 _Thumbnail = value;
@@ -70,7 +63,7 @@ namespace SpotiTube
             set
             {
                 _downloadProgress = value;
-                RaisePropertyChanged();
+                RaisePropertyChanged("downloadProgress");
             }
         }     
 

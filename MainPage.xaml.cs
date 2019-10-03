@@ -306,22 +306,23 @@ namespace App1
 
         private void Ellipse_PointerEntered(Object sender, PointerRoutedEventArgs e)
         {
-            var tmp = new ImageBrush();
-            tmp.ImageSource = new BitmapImage(new Uri(base.BaseUri, @"/Assets/play.png"));
-            (sender as Ellipse).Fill = tmp;                
+            var tmp  = new BitmapImage(new Uri(base.BaseUri, @"/Assets/play.png"));
+            var img = sender as Image;
+            img.Stretch = Stretch.Uniform;
+            img.Source = tmp;                
         }
 
-        private async void Ellipse_PointerExited(object sender, PointerRoutedEventArgs e)
+        private void Ellipse_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            var ellipse = (sender as Ellipse);
-            var tmp = new ImageBrush();
-            tmp.ImageSource = await Helper.base64toBmp((ellipse.DataContext as Song).ThumbnailBase64);
-            ellipse.Fill = tmp;
+            var img = (sender as Image);
+            var tmp = Helper.base64toBmp((img.DataContext as Song).Thumbnail);
+            img.Stretch = Stretch.Fill;
+            img.Source = tmp;
         }
 
         private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
         {        
-            var song = ((sender as Ellipse).DataContext as Song);
+            var song = ((sender as Image).DataContext as Song);
             this.musicPlayer.PlaySong(song);
             this.MainListView.SelectedItem = song;
             this.currentlyPlayingPlaylist = this.selectedPlaylist;
@@ -394,9 +395,9 @@ namespace App1
             }
         }
 
-        private void Ellipse_Loaded(object sender, RoutedEventArgs e)
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-
+            ApplicationView.GetForCurrentView().TryResizeView(new Size(940, 600));
         }
     }
 }

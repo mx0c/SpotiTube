@@ -116,6 +116,7 @@ namespace SpotiTube
             }
             currentSong = currentPlaylist.Songlist[i];
             temp = currentSong;
+
             Helper.executeThreadSafe(() =>
             {
                 this.MainListView.SelectedItem = temp;
@@ -151,16 +152,12 @@ namespace SpotiTube
                 this.mPlayer.Play();
             }
 
-            try
-            {
-                this.currPlayingRect.Fill = new ImageBrush {
-                    ImageSource = await Helper.base64toBmp(song.ThumbnailBase64)
-                };
-            }
-            catch { }
-
             Helper.executeThreadSafe(() =>
             {
+                this.currPlayingRect.Fill = new ImageBrush
+                {
+                    ImageSource = Helper.base64toBmp(song.Thumbnail)
+                };
                 this.currPlayingLabel.Text = song.Title;
             });
         }

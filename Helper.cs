@@ -39,12 +39,12 @@ namespace SpotiTube
                 return "";
         }
 
-        public static async Task<BitmapImage> base64toBmp(String data) {
+        public static BitmapImage base64toBmp(String data) {
             byte[] bData = Convert.FromBase64String(data);
             var ims = new InMemoryRandomAccessStream();
             var dataWriter = new DataWriter(ims);
             dataWriter.WriteBytes(bData);
-            await dataWriter.StoreAsync();
+            dataWriter.StoreAsync();
             ims.Seek(0);
             var img = new BitmapImage();
             img.SetSource(ims);

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SpotiTube;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace App1
 {
@@ -27,6 +29,20 @@ namespace App1
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return (value is Visibility && (Visibility)value == Visibility.Visible);
+        }
+    }
+
+    public class ImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string base64string = value as string;
+            return Helper.base64toBmp(base64string);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
         }
     }
 }

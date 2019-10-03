@@ -126,7 +126,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converter.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Downloader.cs" />
     <Compile Include="DataIO.cs" />
