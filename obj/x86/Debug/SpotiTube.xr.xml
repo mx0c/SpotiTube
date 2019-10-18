@@ -35,7 +35,6 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Height" />
       <RootProperty Name="CanDrag" />
-      <RootEvent Name="SizeChanged" />
       <RootEvent Name="DoubleTapped" />
       <RootEvent Name="DragStarting" />
       <RootMethod Name="GetColumn" />
@@ -87,6 +86,8 @@
     <RootType FullName="Windows.UI.Xaml.Controls.Button">
       <RootProperty Name="Name" />
       <RootProperty Name="Height" />
+      <RootProperty Name="Width" />
+      <RootProperty Name="MinWidth" />
       <RootProperty Name="Content" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />

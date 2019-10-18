@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
 using Windows.Storage;
 using Windows.Media;
+using Windows.Storage.Streams;
 
 namespace SpotiTube
 {
@@ -70,7 +71,6 @@ namespace SpotiTube
                     }
                     else
                     {
-
                         this.playButton.Content = "\uE769";
                     }
                 });
@@ -200,6 +200,9 @@ namespace SpotiTube
 
         public async void Play()
         {
+            if (currentSong == null)
+                return;
+
             if (currentSong.isDownloaded)
             {
                 StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(currentSong.DownloadTitle + ".mp3");
@@ -221,12 +224,15 @@ namespace SpotiTube
                 };
                 this.currPlayingLabel.Text = currentSong.Title;
             });
+
+            SystemMediaTransportControlsDisplayUpdater updater = this.smtc.DisplayUpdater;      
+            updater.Thumbnail = RandomAccessStreamReference.CreateFromStream(await Helper.base64toStream(currentSong.Thumbnail));
+            updater.Update();
         }
 
         public void seek(double percentage)
         {
             this.mPlayer.PlaybackSession.Position = this.mPlayer.PlaybackSession.NaturalDuration.Multiply(percentage / 100);
         }
-
     }
 }

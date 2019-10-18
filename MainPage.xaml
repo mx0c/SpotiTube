@@ -13,7 +13,7 @@
         <local:ImageConverter x:Key="ImageConverter"/>
     </Page.Resources>
 
-    <Grid SizeChanged="Grid_SizeChanged">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="8*"></ColumnDefinition>
@@ -144,11 +144,11 @@
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Height="40" Name="randomButton" Click="RandomButton_Click" Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button Height="40" Name="loopButton"  Click="LoopButton_Click" Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button Height="50" Click="LeftButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="0" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="0" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button Height="50" Click="RightButton_Click" HorizontalAlignment="Stretch" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="0" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Height="40" Width="50" MinWidth="30" Name="randomButton" Click="RandomButton_Click" Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="40" Width="50" Name="loopButton" Click="LoopButton_Click" Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="50" Click="LeftButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="0" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="0" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Height="50" Click="RightButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="0" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
             <TextBlock Grid.Row="0" Grid.Column="8" FontFamily="Segoe MDL2 Assets" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">&#xE994;</TextBlock>
             <Slider Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="0" PointerCaptureLost="VolumeSlider_PointerCaptureLost"  ValueChanged="VolumeSlider_Changed" Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
             <Slider Maximum="100" Minimum="0" Name="TimeSlider" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>

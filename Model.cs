@@ -52,7 +52,7 @@ namespace SpotiTube
             }
         }
         public String addedAt { get; set; }
-        public String duration { get; set; }
+        public String duration { get; set; }       
         public Boolean isDownloaded { get; set; }
         public Boolean isDownloading { get; set; }
         private double _downloadProgress;
@@ -63,7 +63,7 @@ namespace SpotiTube
                 _downloadProgress = value;
                 RaisePropertyChanged("downloadProgress");
             }
-        }     
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void RaisePropertyChanged([CallerMemberName] string name = "")

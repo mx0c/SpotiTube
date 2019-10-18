@@ -51,6 +51,17 @@ namespace SpotiTube
             return img;
         }
 
+        public async static Task<IRandomAccessStream> base64toStream(String data)
+        {
+            byte[] bData = Convert.FromBase64String(data);
+            var ims = new InMemoryRandomAccessStream();
+            var dataWriter = new DataWriter(ims);
+            dataWriter.WriteBytes(bData);
+            await dataWriter.StoreAsync();
+            ims.Seek(0);
+            return ims;
+        }
+
         public static String ImageURLToBase64(String url) {
             using (WebClient client = new WebClient())
             {

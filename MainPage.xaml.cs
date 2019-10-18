@@ -385,10 +385,5 @@ namespace App1
                 songListViewModel.songListObservable.Insert(i, songItem);
             }
         }
-
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            ApplicationView.GetForCurrentView().TryResizeView(new Size(940, 600));
-        }
     }
 }
