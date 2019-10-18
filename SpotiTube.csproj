@@ -126,6 +126,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SongListViewModel.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Downloader.cs" />

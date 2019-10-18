@@ -24,6 +24,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Timers;
 using System.Collections.ObjectModel;
 using Windows.UI.ViewManagement;
+using System.ComponentModel;
 
 namespace App1
 {
@@ -32,31 +33,16 @@ namespace App1
         private MusicPlayer musicPlayer;
         private Song latestSelectedSong;
         private Song draggedSong;
-        private Playlist selectedPlaylist;
-        private ObservableCollection<Song> mainListViewItemSource;
-        private Playlist currentlyPlayingPlaylist;
-        private Song currentlyPlayingSong;
-        private bool loop = false;
-        private bool random = false;
+        private Playlist selectedPlaylist;      
         private Timer scrollTimer;
+        private SongListViewModel songListViewModel = new SongListViewModel();
 
         public MainPage()
         {
             this.InitializeComponent();
-            this.mainListViewItemSource = new ObservableCollection<Song>();
             this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton, this.currPlayingSongRect, this.currPlayingSongLabel);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
-            Task.Run(() => this.loadPlaylists()).Wait();
-            this.musicPlayer.mPlayer.MediaEnded += (sender, eventArgs) => {
-                if (!this.loop)
-                {
-                    this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist, random);
-                }
-                else
-                {
-                    this.musicPlayer.PlaySong(this.currentlyPlayingSong);
-                }
-            };
+            Task.Run(() => this.loadPlaylists()).Wait();           
             Task.Run(() => this.loadSettings()).Wait();   
         }
 
@@ -75,11 +61,10 @@ namespace App1
             {  
                 ObservableCollection<Playlist> lists = await DataIO.ReadPlaylists();
                 Helper.executeInUiThread(() =>
-                {
-                    
+                {                  
                     this.selectedPlaylist = lists[0];
-                    this.MainListView.ItemsSource =  this.mainListViewItemSource;
-                    mainListViewItemSource.Clear();
+                    this.MainListView.ItemsSource =  songListViewModel.songListObservable;
+                    songListViewModel.songListObservable.Clear();
 
                     PlaylistList.Items.Clear();
                     foreach (Playlist pl in lists) {
@@ -91,7 +76,7 @@ namespace App1
                         return;
 
                     foreach (Song s in this.selectedPlaylist.Songlist) {
-                        this.mainListViewItemSource.Add(s);
+                        this.songListViewModel.songListObservable.Add(s);
                     }   
                 });
             }
@@ -113,12 +98,12 @@ namespace App1
 
         private void LeftButton_Click(object sender, RoutedEventArgs e)
         {
-            this.musicPlayer.skipSong(false, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist, this.random);
+            this.musicPlayer.skipSong(false);
         }
 
         private void RightButton_Click(object sender, RoutedEventArgs e)
         {
-            this.musicPlayer.skipSong(true, ref this.currentlyPlayingSong, this.currentlyPlayingPlaylist, this.random);         
+            this.musicPlayer.skipSong(true);         
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -126,7 +111,9 @@ namespace App1
             switch (this.musicPlayer.mPlayer.PlaybackSession.PlaybackState)
             {
                 case MediaPlaybackState.None:
-                    if (this.latestSelectedSong != null) this.musicPlayer.PlaySong(this.latestSelectedSong);            
+                    if (this.latestSelectedSong != null)
+                        this.musicPlayer.currentSong = this.latestSelectedSong;
+                        this.musicPlayer.Play();            
                     break;
                 case MediaPlaybackState.Paused:
                     this.musicPlayer.resume();
@@ -158,11 +145,11 @@ namespace App1
             if (e.Key == Windows.System.VirtualKey.Enter)
             {            
                 var items = new VideoSearch();
-                this.mainListViewItemSource.Clear();               
+                this.songListViewModel.songListObservable.Clear();               
                 foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
                 {
                     var s = new Song(item.Title, item.Url, "none", Helper.ImageURLToBase64(item.Thumbnail), item.Duration);
-                    this.mainListViewItemSource.Add(s);
+                    this.songListViewModel.songListObservable.Add(s);
                 }
             }
         }
@@ -187,14 +174,14 @@ namespace App1
         {
             var playlist = (Playlist)e.ClickedItem;
             this.selectedPlaylist = playlist;
-            this.mainListViewItemSource.Clear();
+            this.songListViewModel.songListObservable.Clear();
             
             if (this.selectedPlaylist.Songlist == null)
                 return;
 
             foreach (Song s in this.selectedPlaylist.Songlist)
             {
-                this.mainListViewItemSource.Add(s);
+                this.songListViewModel.songListObservable.Add(s);
             }
         }
 
@@ -250,10 +237,10 @@ namespace App1
         private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var song = ((sender as Grid).DataContext as Song);
-            this.musicPlayer.PlaySong(song);
+            this.musicPlayer.currentSong = song;
+            this.musicPlayer.Play();
             this.MainListView.SelectedItem = song;
-            this.currentlyPlayingPlaylist = this.selectedPlaylist;
-            this.currentlyPlayingSong = song;
+            this.musicPlayer.currentPlaylist = this.selectedPlaylist;
         }
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -265,28 +252,28 @@ namespace App1
     
         private void LoopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!this.loop)
+            if (!this.musicPlayer.loop)
             {
-                this.loop = true;
+                this.musicPlayer.loop = true;
                 this.loopButton.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
             }
             else
             {
-                this.loop = false;
+                this.musicPlayer.loop = false;
                 this.loopButton.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             }
         }
 
         private void RandomButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!this.random)
+            if (!this.musicPlayer.random)
             {
-                this.random = true;
+                this.musicPlayer.random = true;
                 this.randomButton.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
             }
             else
             {
-                this.random = false;
+                this.musicPlayer.random = false;
                 this.randomButton.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             }
         }
@@ -296,7 +283,7 @@ namespace App1
             var toDelete = (sender as MenuFlyoutItem).DataContext as Song;
             this.selectedPlaylist.Songlist.Remove(toDelete);
             await DataIO.SavePlaylist(this.selectedPlaylist);
-            this.mainListViewItemSource.Remove(toDelete);
+            this.songListViewModel.songListObservable.Remove(toDelete);
         }
 
         private void MainListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
@@ -327,10 +314,10 @@ namespace App1
         private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
         {        
             var song = ((sender as Image).DataContext as Song);
-            this.musicPlayer.PlaySong(song);
+            this.musicPlayer.currentSong = song;
+            this.musicPlayer.Play();
             this.MainListView.SelectedItem = song;
-            this.currentlyPlayingPlaylist = this.selectedPlaylist;
-            this.currentlyPlayingSong = song;
+            this.musicPlayer.currentPlaylist = this.selectedPlaylist;
         }
 
         private void DownloadPlaylist_Click(object sender, RoutedEventArgs e)
@@ -375,16 +362,16 @@ namespace App1
         private async void DownloadSong_Click(object sender, RoutedEventArgs e)
         {
             var song = ((sender as MenuFlyoutItem).DataContext as Song);
-            var songItem = this.mainListViewItemSource.Where(s => s.SongURL == song.SongURL).FirstOrDefault();
+            var songItem = this.songListViewModel.songListObservable.Where(s => s.SongURL == song.SongURL).FirstOrDefault();
 
             if (songItem.isDownloaded || songItem.isDownloading)
                 return;
 
-            var i = this.mainListViewItemSource.IndexOf(songItem);
+            var i = this.songListViewModel.songListObservable.IndexOf(songItem);
 
             songItem.isDownloading = true;
-            mainListViewItemSource.RemoveAt(i);
-            mainListViewItemSource.Insert(i, songItem);
+            songListViewModel.songListObservable.RemoveAt(i);
+            songListViewModel.songListObservable.Insert(i, songItem);
 
             var progHandler = new Progress<double>(p => songItem.downloadProgress = p * 100.0);
 
@@ -394,8 +381,8 @@ namespace App1
                 this.selectedPlaylist.Songlist.RemoveAt(i);
                 this.selectedPlaylist.Songlist.Insert(i, songItem);
                 await DataIO.SavePlaylist(this.selectedPlaylist);
-                mainListViewItemSource.RemoveAt(i);
-                mainListViewItemSource.Insert(i, songItem);
+                songListViewModel.songListObservable.RemoveAt(i);
+                songListViewModel.songListObservable.Insert(i, songItem);
             }
         }
 

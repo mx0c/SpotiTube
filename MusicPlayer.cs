@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
 using Windows.Storage;
+using Windows.Media;
 
 namespace SpotiTube
 {
@@ -23,9 +24,13 @@ namespace SpotiTube
     {
         public int currentSongDuration { get; set; }
         public int currentSongTime { get; set; }
+        public Playlist currentPlaylist { get; set; }
+        public Song currentSong { get; set; }
+        public bool random { get; set; }
+        public bool loop { get; set; }
         public MediaPlayer mPlayer = new MediaPlayer();
         private Timer clock = new Timer();
-
+        
         private TextBlock currentDuration;
         private TextBlock currentTime;
         private Slider timeSlider;
@@ -33,6 +38,7 @@ namespace SpotiTube
         private Button playButton;
         private TextBlock currPlayingLabel;
         private Rectangle currPlayingRect;
+        private SystemMediaTransportControls smtc;
 
         public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList, Button playButton, Rectangle currRect, TextBlock currLabel) {
             this.currentDuration = CurrentDuration;
@@ -42,6 +48,17 @@ namespace SpotiTube
             this.playButton = playButton;
             this.currPlayingRect = currRect;
             this.currPlayingLabel = currLabel;
+
+            this.mPlayer.MediaEnded += (sender, eventArgs) => {
+                if (!loop)
+                {
+                    skipSong(true);
+                }
+                else
+                {
+                    this.Play();
+                }
+            };
 
             this.mPlayer.CurrentStateChanged += (player, obj) => {
                 Helper.executeInUiThread(() =>
@@ -57,11 +74,52 @@ namespace SpotiTube
                         this.playButton.Content = "\uE769";
                     }
                 });
+
+                switch (this.mPlayer.PlaybackSession.PlaybackState)
+                {
+                    case MediaPlaybackState.Playing:
+                        smtc.PlaybackStatus = MediaPlaybackStatus.Playing;
+                        break;
+                    case MediaPlaybackState.Paused:
+                        smtc.PlaybackStatus = MediaPlaybackStatus.Paused;
+                        break;
+                    default:
+                        break;
+                }
             };
+
+            this.smtc = SystemMediaTransportControls.GetForCurrentView();
+            this.mPlayer.CommandManager.IsEnabled = false;
+            this.smtc.IsNextEnabled = true;
+            this.smtc.IsPlayEnabled = true;
+            this.smtc.IsPauseEnabled = true;
+            this.smtc.IsPreviousEnabled = true;
+            this.smtc.ButtonPressed += Smtc_ButtonPressed;
 
             this.clock.Elapsed += new ElapsedEventHandler(onTimerEvent);
             this.clock.Interval = 500;
             this.clock.Enabled = true;
+        }
+
+        private void Smtc_ButtonPressed(SystemMediaTransportControls sender, SystemMediaTransportControlsButtonPressedEventArgs args)
+        {
+            switch (args.Button)
+            {
+                case SystemMediaTransportControlsButton.Play:
+                    this.resume();
+                    break;
+                case SystemMediaTransportControlsButton.Pause:
+                    this.PauseSong();
+                    break;
+                case SystemMediaTransportControlsButton.Next:
+                    this.skipSong(true);
+                    break;
+                case SystemMediaTransportControlsButton.Previous:
+                    this.skipSong(false);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void onTimerEvent(object source, ElapsedEventArgs e) {
@@ -89,12 +147,13 @@ namespace SpotiTube
             return audioStreamInfo.Url;
         }
 
-        public void skipSong(bool direction, ref Song currentSong, Playlist currentPlaylist, bool random = false)
+        public void skipSong(bool direction)
         {
             if (currentPlaylist == null) return;
             if (random) {
                 var randInt = new Random().Next(0, currentPlaylist.Songlist.Count);
-                this.PlaySong(currentPlaylist.Songlist[randInt]);
+                this.currentSong = currentPlaylist.Songlist[randInt];
+                this.Play();
                 this.MainListView.SelectedItem = currentPlaylist.Songlist[randInt];
                 return;
             }
@@ -107,12 +166,14 @@ namespace SpotiTube
             {
                 if (i == currentPlaylist.Songlist.Count-1)
                     i = -1;
-                this.PlaySong(currentPlaylist.Songlist[++i]);
+                this.currentSong = currentPlaylist.Songlist[++i];
+                this.Play();
             }
             else {
                 if (i == 0)
                     i = 1;
-                this.PlaySong(currentPlaylist.Songlist[--i]);
+                this.currentSong = currentPlaylist.Songlist[--i];
+                this.Play();
             }
             currentSong = currentPlaylist.Songlist[i];
             temp = currentSong;
@@ -137,17 +198,17 @@ namespace SpotiTube
             this.mPlayer.Volume = percentage / 100.0;
         }
 
-        public async void PlaySong(Song song)
+        public async void Play()
         {
-            if (song.isDownloaded)
+            if (currentSong.isDownloaded)
             {
-                StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(song.DownloadTitle + ".mp3");
+                StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(currentSong.DownloadTitle + ".mp3");
                 this.mPlayer.Source = MediaSource.CreateFromStorageFile(sf);
                 this.mPlayer.Play();
             }
             else
             {
-                var stream = await this.GetAudioStream(song.SongURL);
+                var stream = await this.GetAudioStream(currentSong.SongURL);
                 this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));
                 this.mPlayer.Play();
             }
@@ -156,9 +217,9 @@ namespace SpotiTube
             {
                 this.currPlayingRect.Fill = new ImageBrush
                 {
-                    ImageSource = Helper.base64toBmp(song.Thumbnail)
+                    ImageSource = Helper.base64toBmp(currentSong.Thumbnail)
                 };
-                this.currPlayingLabel.Text = song.Title;
+                this.currPlayingLabel.Text = currentSong.Title;
             });
         }
 
