@@ -31,6 +31,8 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Background" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="BorderThickness" />
       <RootProperty Name="Padding" />
       <RootProperty Name="Margin" />
       <RootProperty Name="Height" />
@@ -107,6 +109,7 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
       <RootProperty Name="Content" />
+      <RootProperty Name="Background" />
       <RootProperty Name="Padding" />
       <RootProperty Name="VerticalScrollBarVisibility" />
       <RootProperty Name="HorizontalScrollBarVisibility" />
@@ -157,6 +160,7 @@
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
       <RootProperty Name="Path" />
       <RootProperty Name="Converter" />
+      <RootProperty Name="UpdateSourceTrigger" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
     <RootType FullName="Windows.UI.Xaml.Shapes.Rectangle">

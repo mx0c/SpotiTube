@@ -36,6 +36,7 @@ namespace App1
         private Playlist selectedPlaylist;      
         private Timer scrollTimer;
         private SongListViewModel songListViewModel = new SongListViewModel();
+        private Boolean searching = false;
 
         public MainPage()
         {
@@ -143,7 +144,8 @@ namespace App1
         private void SearchBar_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
-            {            
+            {
+                this.searching = true;
                 var items = new VideoSearch();
                 this.songListViewModel.songListObservable.Clear();               
                 foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
@@ -172,6 +174,7 @@ namespace App1
 
         private void PlaylistList_ItemClick(object sender, ItemClickEventArgs e)
         {
+            searching = false;
             var playlist = (Playlist)e.ClickedItem;
             this.selectedPlaylist = playlist;
             this.songListViewModel.songListObservable.Clear();
@@ -288,6 +291,9 @@ namespace App1
 
         private void MainListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
+            if (searching)
+                return;
+
             var lv = (ListView)sender;
             FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(lv);
             var type = e.OriginalSource.GetType();
@@ -334,9 +340,9 @@ namespace App1
                 Helper.executeInUiThread(() =>
                 {
                     if(forward)
-                        scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset + 1);
+                        scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset + 0.5);
                     else
-                        scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset - 1);
+                        scrollviewer.ScrollToHorizontalOffset(scrollviewer.HorizontalOffset - 0.5);
 
                     if (scrollviewer.HorizontalOffset == scrollviewer.ScrollableWidth)
                         forward = false;

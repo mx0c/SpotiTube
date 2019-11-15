@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
@@ -67,6 +68,16 @@ namespace SpotiTube
             {
                 byte[] data = client.DownloadData(url);
                 return Convert.ToBase64String(data);
+            }
+        }
+
+        public static Boolean checkIfOnline() {
+            try { 
+                Ping ping = new Ping();
+                PingReply pr = ping.Send("8.8.8.8", 500);
+                return (pr.Status == IPStatus.Success);
+            }catch(Exception e) {
+                return false;
             }
         }
     }

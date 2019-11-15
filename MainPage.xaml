@@ -15,30 +15,33 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="65"></RowDefinition>
             <RowDefinition Height="7*"></RowDefinition>
-            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Name="navbar" Grid.Column="0"  Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray">
+        <Grid Name="navbar" Grid.Column="0"  Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray" BorderBrush="LightGray" BorderThickness="5 0 5 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 <ColumnDefinition Width="0.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="65"></RowDefinition>
                 <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="175"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Click="AddPlaylistButton_Click" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xE710;</Button>
-            
-            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
+            <Button Click="AddPlaylistButton_Click" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0 0 15 0" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xECC8;</TextBlock>
+                    <TextBlock>Add new Playlist</TextBlock>
+                </StackPanel>
+            </Button> 
+
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray">
                 <ListView DataContext="{Binding plStackpanel}" RightTapped="StackPanel_RightTapped" IsItemClickEnabled="True" ItemClick="PlaylistList_ItemClick" Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
@@ -59,10 +62,10 @@
                 </ListView>
             </ScrollViewer>
 
-            <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}">
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="7.5*"></RowDefinition>
-                    <RowDefinition Height="2.5*"></RowDefinition>
+                    <RowDefinition Height="145"></RowDefinition>
+                    <RowDefinition Height="25"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Rectangle Width="auto" Name="currPlayingSongRect" Grid.Row="0"></Rectangle>
                 <ScrollViewer Padding="10 0 10 0" x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
@@ -88,12 +91,12 @@
                     </FlyoutBase.AttachedFlyout>
                     <ListView.HeaderTemplate>
                         <DataTemplate>
-                            <Grid Padding="13" Background="{ThemeResource SystemBaseLowColor}">
+                            <Grid Padding="13" Background="{ThemeResource ListBoxBorderThemeBrush}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*"/>
-                                    <ColumnDefinition Width="0.5*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="480"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Name" Style="{ThemeResource CaptionTextBlockStyle}"/>
                                 <TextBlock Grid.Column="1" Text="Länge" Style="{ThemeResource CaptionTextBlockStyle}"/>
@@ -106,13 +109,13 @@
                         <DataTemplate>
                             <Grid Margin="-9 2 0 2" Padding="0 1 0 1" DoubleTapped="Grid_DoubleTapped" Height="40" CanDrag="True" DragStarting="Grid_DragStarting">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
-                                    <ColumnDefinition Width="450"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="125"/>
-                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="40"></ColumnDefinition>
+                                    <ColumnDefinition Width="450"></ColumnDefinition>
+                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                    <ColumnDefinition Width="130"></ColumnDefinition>
+                                    <ColumnDefinition Width="25"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Image Stretch="Fill" Source="{Binding Path=Thumbnail, Converter={StaticResource ImageConverter}}" PointerEntered="Ellipse_PointerEntered" PointerExited="Ellipse_PointerExited" Tapped="Ellipse_Tapped" />
+                                <Image Stretch="Fill" Source="{Binding Path=Thumbnail, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageConverter}}" PointerEntered="Ellipse_PointerEntered" PointerExited="Ellipse_PointerExited" Tapped="Ellipse_Tapped" />
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" Padding="10 0 30 0" />
                                 <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding duration}"/>
                                 <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding addedAt}"/>
@@ -125,27 +128,27 @@
             </ScrollViewer>
         </Border>
 
-        <Grid Background="#9c9c9c" Grid.Row="2" Grid.Column="2" Grid.RowSpan="5">
+        <Grid Background="LightGray" Grid.Row="2" Grid.Column="2" Grid.RowSpan="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="7*"></RowDefinition>
                 <RowDefinition Height="3*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="0.75*"></ColumnDefinition>
-                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="1.5*"></ColumnDefinition>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Height="40" Width="50" MinWidth="30" Name="randomButton" Click="RandomButton_Click" Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button Height="40" Width="50" Name="loopButton" Click="LoopButton_Click" Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="40" Width="40" MinWidth="30" Name="randomButton" Click="RandomButton_Click" Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="40" Width="40" Name="loopButton" Click="LoopButton_Click" Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
             <Button Height="50" Click="LeftButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="0" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
             <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="0" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
             <Button Height="50" Click="RightButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="0" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>

@@ -89,11 +89,10 @@ namespace SpotiTube
             };
 
             this.smtc = SystemMediaTransportControls.GetForCurrentView();
-            this.mPlayer.CommandManager.IsEnabled = false;
-            this.smtc.IsNextEnabled = true;
-            this.smtc.IsPlayEnabled = true;
-            this.smtc.IsPauseEnabled = true;
-            this.smtc.IsPreviousEnabled = true;
+            this.smtc.IsNextEnabled = false;
+            this.smtc.IsPlayEnabled = false;
+            this.smtc.IsPauseEnabled = false;
+            this.smtc.IsPreviousEnabled = false;
             this.smtc.ButtonPressed += Smtc_ButtonPressed;
 
             this.clock.Elapsed += new ElapsedEventHandler(onTimerEvent);
@@ -211,9 +210,17 @@ namespace SpotiTube
             }
             else
             {
-                var stream = await this.GetAudioStream(currentSong.SongURL);
-                this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));
-                this.mPlayer.Play();
+                //if (!Helper.checkIfOnline())
+                //    return;
+                try
+                {
+                    var stream = await this.GetAudioStream(currentSong.SongURL);
+                    this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));
+                    this.mPlayer.Play();
+                }
+                catch (System.Net.Http.HttpRequestException e) {
+                    return;
+                }
             }
 
             Helper.executeInUiThread(() =>
@@ -225,9 +232,12 @@ namespace SpotiTube
                 this.currPlayingLabel.Text = currentSong.Title;
             });
 
-            SystemMediaTransportControlsDisplayUpdater updater = this.smtc.DisplayUpdater;      
-            updater.Thumbnail = RandomAccessStreamReference.CreateFromStream(await Helper.base64toStream(currentSong.Thumbnail));
-            updater.Update();
+            this.smtc.IsNextEnabled = true;
+            this.smtc.IsPlayEnabled = true;
+            this.smtc.IsPauseEnabled = true;
+            this.smtc.IsPreviousEnabled = true;
+            this.smtc.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromStream(await Helper.base64toStream(currentSong.Thumbnail));
+            this.smtc.DisplayUpdater.Update();
         }
 
         public void seek(double percentage)
