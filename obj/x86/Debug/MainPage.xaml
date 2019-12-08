@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
+
     <Page.Resources>
         <local:BooleanToVisibilityConverter x:Key="boolToVis"/>
         <local:ImageConverter x:Key="ImageConverter"/>
@@ -30,45 +30,53 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="65"></RowDefinition>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="175"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="180"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button x:ConnectionId='20'                                 Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:ConnectionId='20'                                 Grid.Column="0" Height="40" VerticalAlignment="Center" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="2">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="0 0 15 0" FontFamily="Segoe MDL2 Assets" FontSize="20">&#xECC8;</TextBlock>
-                    <TextBlock>Add new Playlist</TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="40"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="1" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Left">&#xECC8;</TextBlock>
+                        <TextBlock Grid.Column="2">Add new Playlist</TextBlock>
+                    </Grid>
                 </StackPanel>
             </Button> 
 
             <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray">
                 <ListView x:ConnectionId='24' DataContext="{Binding plStackpanel}"                                      IsItemClickEnabled="True"                                    Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem x:ConnectionId='25'                          Name="EditButton" Text="Rename"/>
-                            <MenuFlyoutItem x:ConnectionId='26'                            Text="Delete"/>
-                            <MenuFlyoutItem x:ConnectionId='27'                                Text="Download"/>
-                        </MenuFlyout>
-                    </FlyoutBase.AttachedFlyout>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel x:ConnectionId='28' Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
-                                <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Margin="20 0 0 0"></TextBlock>
-                                <TextBlock Name="playlistDownloadedLabel" Visibility="Collapsed" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="65 0 0 0">&#xE896;</TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                            <MenuFlyout>
+                                <MenuFlyoutItem x:ConnectionId='25'                          Name="EditButton" Text="Rename"/>
+                                <MenuFlyoutItem x:ConnectionId='26'                            Text="Delete"/>
+                                <MenuFlyoutItem x:ConnectionId='27'                                Text="Download"/>
+                            </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel x:ConnectionId='28' Grid.Row="1" Name="plStackpanel"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10" Orientation="Horizontal"                                                         AllowDrop="True">
+                                    <TextBlock VerticalAlignment="Center" FontSize="22" FontFamily="Segoe MDL2 Assets">&#xE90B;</TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Margin="20 0 0 0"></TextBlock>
+                                    <TextBlock Name="playlistDownloadedLabel" Visibility="Collapsed" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="65 0 0 0">&#xE896;</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
 
-            <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}" >
+            <Grid Grid.Row="3" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="145"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Rectangle x:ConnectionId='21' Width="auto" Name="currPlayingSongRect" Grid.Row="0"></Rectangle>
-                <ScrollViewer x:ConnectionId='22' Padding="10 0 10 0" x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
+                <ScrollViewer x:ConnectionId='22'  x:Name="scrollviewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" Grid.Row="1"                             
                                                 >
                 <TextBlock x:ConnectionId='23' Padding="0 5 0 0" Name="currPlayingSongLabel" Grid.Row="1"></TextBlock>
@@ -80,9 +88,14 @@
         <TextBox x:ConnectionId='3' Margin="0 0 10 0" Padding="45 5 0 0" Grid.Column="2" Name="SearchBar" IsSpellCheckEnabled="False"                         Background="#66ACACAC" Height="40" VerticalAlignment="Center" FontSize="20"></TextBox>
         <TextBlock  Margin="10 0 10 0" Grid.Column="2" FontFamily="Segoe MDL2 Assets" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Center">&#xE721;</TextBlock>
         
-        <Border x:ConnectionId='4' Name="Main" Grid.Row="1" Grid.Column="2">
+        <Border x:ConnectionId='4' Name="Main" Grid.Row="1" Grid.Column="2" BorderBrush="LightGray" BorderThickness="0 0 10 0">  
             <ScrollViewer>
                 <ListView x:ConnectionId='14' ItemsSource="displayedSongs"                                        SelectionMode="Single" Name="MainListView"                           IsItemClickEnabled="True">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <FlyoutBase.AttachedFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem x:ConnectionId='15'                                Text="Delete"/>
@@ -94,14 +107,17 @@
                             <Grid Padding="13" Background="{ThemeResource ListBoxBorderThemeBrush}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="480"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Name" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                <TextBlock Grid.Column="1" Text="Länge" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                <TextBlock Grid.Column="2" Text="hinzugefügt am" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                <TextBlock Grid.Column="3" Text="Downloaded" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="2" Text="Länge" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="4" Text="hinzugefügt am" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="6" Text="Downloaded" Style="{ThemeResource CaptionTextBlockStyle}"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.HeaderTemplate>
@@ -111,16 +127,19 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"></ColumnDefinition>
                                     <ColumnDefinition Width="450"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="130"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="25"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Image x:ConnectionId='19' Stretch="Fill" Source="{Binding Path=Thumbnail, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageConverter}}"                                                                                                       />
+                                <Image x:ConnectionId='19' Stretch="Fill" Grid.Column="0" Source="{Binding Path=Thumbnail, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageConverter}}"                                                                                                                                                    />
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" Padding="10 0 30 0" />
-                                <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding duration}"/>
-                                <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding addedAt}"/>
-                                <TextBlock Grid.Column="4" Visibility="{Binding Path=isDownloaded, Converter={StaticResource boolToVis}}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE896;"/>
-                                <ProgressBar Grid.Column="4" Visibility="{Binding Path=isDownloading, Converter={StaticResource boolToVis}}" Value="{Binding downloadProgress}" Minimum="0" Maximum="100"/>
+                                <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding duration}"/>
+                                <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{Binding addedAt}"/>
+                                <TextBlock Grid.Column="7" Visibility="{Binding Path=isDownloaded, Converter={StaticResource boolToVis}}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE896;"/>
+                                <ProgressBar Grid.Column="7" Visibility="{Binding Path=isDownloading, Converter={StaticResource boolToVis}}" Value="{Binding downloadProgress}" Minimum="0" Maximum="100"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

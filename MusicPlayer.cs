@@ -218,7 +218,12 @@ namespace SpotiTube
                     this.mPlayer.Source = MediaSource.CreateFromUri(new Uri(stream));
                     this.mPlayer.Play();
                 }
-                catch (System.Net.Http.HttpRequestException e) {
+                catch (System.Net.Http.HttpRequestException)
+                {
+                    return;
+                }
+                catch (NullReferenceException){
+                    //happens if "video" is not playable for some reason
                     return;
                 }
             }

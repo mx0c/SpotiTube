@@ -43,8 +43,8 @@ namespace App1
             this.InitializeComponent();
             this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton, this.currPlayingSongRect, this.currPlayingSongLabel);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
-            Task.Run(() => this.loadPlaylists()).Wait();           
-            Task.Run(() => this.loadSettings()).Wait();   
+            Task.Run(() => this.loadPlaylists()).Wait();
+            Task.Run(() => this.loadSettings()).Wait();
         }
 
         private async void loadSettings()
@@ -78,7 +78,7 @@ namespace App1
 
                     foreach (Song s in this.selectedPlaylist.Songlist) {
                         this.songListViewModel.songListObservable.Add(s);
-                    }   
+                    }                   
                 });
             }
             catch (NullReferenceException)
@@ -389,6 +389,21 @@ namespace App1
                 await DataIO.SavePlaylist(this.selectedPlaylist);
                 songListViewModel.songListObservable.RemoveAt(i);
                 songListViewModel.songListObservable.Insert(i, songItem);
+            }
+        }
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Image_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            var img = (sender as Image);
+            if (img.DataContext as Song != null)
+            {
+                var tmp = Helper.base64toBmp((img.DataContext as Song).Thumbnail);
+                img.Stretch = Stretch.Fill;
+                img.Source = tmp;
             }
         }
     }
