@@ -126,13 +126,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SongListViewModel.cs" />
-    <Compile Include="Converter.cs" />
-    <Compile Include="Helper.cs" />
-    <Compile Include="Downloader.cs" />
-    <Compile Include="DataIO.cs" />
-    <Compile Include="Model.cs" />
-    <Compile Include="MusicPlayer.cs" />
+    <Compile Include="classes\SongListViewModel.cs" />
+    <Compile Include="classes\Converter.cs" />
+    <Compile Include="classes\Helper.cs" />
+    <Compile Include="classes\Downloader.cs" />
+    <Compile Include="classes\DataIO.cs" />
+    <Compile Include="classes\Model.cs" />
+    <Compile Include="classes\MusicPlayer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
