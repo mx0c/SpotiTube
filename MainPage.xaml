@@ -32,24 +32,29 @@
                 <RowDefinition Height="65"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="180"></RowDefinition>
+                <RowDefinition Height="174"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Click="AddPlaylistButton_Click" Grid.Column="0" Height="40" VerticalAlignment="Center" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="2">
-                <StackPanel Orientation="Horizontal">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="40"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Left">&#xECC8;</TextBlock>
-                        <TextBlock Grid.Column="2">Add new Playlist</TextBlock>
-                    </Grid>
-                </StackPanel>
-            </Button> 
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4.25*"></ColumnDefinition>
+                    <ColumnDefinition Width="5.75*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Height="40" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="2" Margin="3 0 0 0">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Image Source="ms-appx:/Assets/black-spotify-icon.png" Width="20" Height="20"></Image>
+                        <TextBlock>Spotify</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Click="AddPlaylistButton_Click" Grid.Column="0" Height="40" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="2" Margin="0 0 3 0">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <TextBlock Grid.Column="1" FontFamily="Segoe MDL2 Assets" FontSize="17" VerticalAlignment="Center">&#xECC8;</TextBlock>
+                        <TextBlock Grid.Column="2">Add</TextBlock>
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray">
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Background="#b5b5b5">
                 <ListView DataContext="{Binding plStackpanel}" RightTapped="StackPanel_RightTapped" IsItemClickEnabled="True" ItemClick="PlaylistList_ItemClick" Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                             <MenuFlyout>
@@ -69,6 +74,8 @@
                         </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
+
+            <Canvas Grid.Row="2" Background="#b5b5b5" Margin="0 0 0 5"></Canvas>
 
             <Grid Grid.Row="3" Background="{ThemeResource ListBoxItemPressedBackgroundThemeBrush}" >
                 <Grid.RowDefinitions>
@@ -166,11 +173,11 @@
                 <ColumnDefinition Width="50"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Height="40" Width="40" MinWidth="30" Name="randomButton" Click="RandomButton_Click" Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button Height="40" Width="40" Name="loopButton" Click="LoopButton_Click" Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
-            <Button Height="50" Click="LeftButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="0" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="0" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
-            <Button Height="50" Click="RightButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="0" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="30"/>
+            <Button Background="LightGray" Height="40" Width="40" MinWidth="30" Name="randomButton" Click="RandomButton_Click" Content="&#xE8B1;" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Background="LightGray" Height="40" Width="40" Name="loopButton" Click="LoopButton_Click" Content="&#xE8EE;" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" FontFamily="Segoe MDL2 Assets" FontSize="20"></Button>
+            <Button Height="40" Width="40" Click="LeftButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE973;" Grid.Row="0" Grid.Column="4" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+            <Button Height="50" Name="PlayButton" Click="PlayButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE768;" Grid.Row="0" Grid.Column="5" FontFamily="Segoe MDL2 Assets" FontSize="40"/>
+            <Button  Height="40" Width="40" Click="RightButton_Click" HorizontalAlignment="Center" Margin="10 10 10 10" VerticalAlignment="Center" Content="&#xE974;" Grid.Row="0" Grid.Column="6" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
             <TextBlock Grid.Row="0" Grid.Column="8" FontFamily="Segoe MDL2 Assets" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">&#xE994;</TextBlock>
             <Slider Maximum="100" Minimum="0" Name="VolumeSlider" Grid.Row="0" PointerCaptureLost="VolumeSlider_PointerCaptureLost"  ValueChanged="VolumeSlider_Changed" Grid.Column="9" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
             <Slider Maximum="100" Minimum="0" Name="TimeSlider" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
