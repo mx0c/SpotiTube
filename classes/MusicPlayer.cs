@@ -40,8 +40,9 @@ namespace SpotiTube
         private TextBlock currPlayingLabel;
         private Rectangle currPlayingRect;
         private SystemMediaTransportControls smtc;
+        private StackPanel StartLogoStackPanel;
 
-        public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList, Button playButton, Rectangle currRect, TextBlock currLabel) {
+        public MusicPlayer(TextBlock CurrentDuration, TextBlock CurrentTime, Slider TimeSlider, ListView mainList, Button playButton, Rectangle currRect, TextBlock currLabel, StackPanel startlogostackpanel) {
             this.currentDuration = CurrentDuration;
             this.currentTime = CurrentTime;
             this.timeSlider = TimeSlider;
@@ -49,6 +50,7 @@ namespace SpotiTube
             this.playButton = playButton;
             this.currPlayingRect = currRect;
             this.currPlayingLabel = currLabel;
+            this.StartLogoStackPanel = startlogostackpanel;
 
             this.mPlayer.MediaEnded += (sender, eventArgs) => {
                 if (!loop)
@@ -146,7 +148,7 @@ namespace SpotiTube
             return audioStreamInfo.Url;
         }
 
-        public void skipSong(bool direction)
+        public void skipSong(bool direction = true)
         {
             if (currentPlaylist == null) return;
             if (random) {
@@ -160,7 +162,7 @@ namespace SpotiTube
             var temp = currentSong;
             var i = currentPlaylist.Songlist.IndexOf(currentPlaylist.Songlist.Where(x => x == temp).FirstOrDefault());
 
-            //right
+            //forward
             if (direction)
             {
                 if (i == currentPlaylist.Songlist.Count-1)
@@ -168,6 +170,7 @@ namespace SpotiTube
                 this.currentSong = currentPlaylist.Songlist[++i];
                 this.Play();
             }
+            //backward
             else {
                 if (i == 0)
                     i = 1;
@@ -199,8 +202,11 @@ namespace SpotiTube
 
         public async void Play()
         {
-            if (currentSong == null)
+            if (currentSong == null && currentPlaylist == null)
                 return;
+
+            if (currentPlaylist != null && currentSong == null)
+                this.currentSong = currentPlaylist.Songlist.FirstOrDefault();
 
             if (currentSong.isDownloaded)
             {
@@ -224,12 +230,15 @@ namespace SpotiTube
                 }
                 catch (NullReferenceException){
                     //happens if "video" is not playable for some reason
+                    Helper.ErrorDialog("Cant Play this Song","For some reason this song can't be played.");
+                    skipSong();
                     return;
                 }
             }
-
+            
             Helper.executeInUiThread(() =>
             {
+                this.StartLogoStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 this.currPlayingRect.Fill = new ImageBrush
                 {
                     ImageSource = Helper.base64toBmp(currentSong.Thumbnail)

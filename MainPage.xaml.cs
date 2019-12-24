@@ -41,7 +41,7 @@ namespace App1
         public MainPage()
         {
             this.InitializeComponent();
-            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton, this.currPlayingSongRect, this.currPlayingSongLabel);
+            this.musicPlayer = new MusicPlayer(this.CurrentDuration, this.CurrentTime, this.TimeSlider, this.MainListView, this.PlayButton, this.currPlayingSongRect, this.currPlayingSongLabel, this.StartLogoStackPanel);
             this.TimeSlider.AddHandler(PointerReleasedEvent, new PointerEventHandler(TimeSlider_OnPointerRelease),true);
             Task.Run(() => this.loadPlaylists()).Wait();
             Task.Run(() => this.loadSettings()).Wait();
@@ -405,6 +405,32 @@ namespace App1
                 img.Stretch = Stretch.Fill;
                 img.Source = tmp;
             }
+        }
+
+        private void TextBlock_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            var txtBlock = sender as TextBlock;
+            txtBlock.FontFamily = new FontFamily("Arial");
+            txtBlock.Text = "►";
+        }
+
+        private void TextBlock_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            var txtBlock = sender as TextBlock;
+            txtBlock.FontFamily = new FontFamily("Segoe MDL2 Assets");
+            txtBlock.Text = "\uE90B";
+        }
+
+        private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var txtBlock = sender as TextBlock;
+            var playlist = txtBlock.DataContext as Playlist;
+
+            searching = false;          
+            this.selectedPlaylist = playlist;
+            this.musicPlayer.currentPlaylist = playlist;
+            this.musicPlayer.currentSong = playlist.Songlist.FirstOrDefault();
+            this.musicPlayer.Play();
         }
     }
 }

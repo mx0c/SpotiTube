@@ -22,6 +22,16 @@ namespace SpotiTube
             });
         }
 
+        public static async void ErrorDialog(string title, string content) {
+            ContentDialog noWifiDialog = new ContentDialog()
+            {
+                Title = title,
+                Content = content,
+                CloseButtonText = "Ok"
+            };
+            await noWifiDialog.ShowAsync();
+        }
+
         public static async Task<string> InputTextDialogAsync(string title, string buttonText, string boxText = "")
         {
             TextBox inputTextBox = new TextBox();
