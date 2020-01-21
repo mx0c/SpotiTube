@@ -54,7 +54,7 @@
                 </Button>
             </Grid>
 
-            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Background="#b5b5b5">
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
                 <ListView DataContext="{Binding plStackpanel}" RightTapped="StackPanel_RightTapped" IsItemClickEnabled="True" ItemClick="PlaylistList_ItemClick" Name="PlaylistList">
                     <FlyoutBase.AttachedFlyout>
                             <MenuFlyout>

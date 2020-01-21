@@ -23,13 +23,20 @@ namespace SpotiTube
         }
 
         public static async void ErrorDialog(string title, string content) {
-            ContentDialog noWifiDialog = new ContentDialog()
+            Helper.executeInUiThread(async () =>
             {
-                Title = title,
-                Content = content,
-                CloseButtonText = "Ok"
-            };
-            await noWifiDialog.ShowAsync();
+                ContentDialog noWifiDialog = new ContentDialog()
+                {
+                    Title = title,
+                    Content = content,
+                    CloseButtonText = "Ok"
+                };
+                try
+                {
+                    await noWifiDialog.ShowAsync();
+                }
+                catch (Exception) { };
+            });
         }
 
         public static async Task<string> InputTextDialogAsync(string title, string buttonText, string boxText = "")

@@ -228,7 +228,7 @@ namespace SpotiTube
                 {
                     return;
                 }
-                catch (NullReferenceException){
+                catch (NullReferenceException e){
                     //happens if "video" is not playable for some reason
                     Helper.ErrorDialog("Cant Play this Song","For some reason this song can't be played.");
                     skipSong();
