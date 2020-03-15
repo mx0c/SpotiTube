@@ -1,30 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using SpotiTube;
 using Windows.Media.Playback;
 using YoutubeSearch;
 using Windows.ApplicationModel.DataTransfer;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Windows.UI.Core;
-using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Timers;
 using System.Collections.ObjectModel;
-using Windows.UI.ViewManagement;
-using System.ComponentModel;
+
 
 namespace App1
 {
@@ -431,6 +420,16 @@ namespace App1
             this.musicPlayer.currentPlaylist = playlist;
             this.musicPlayer.currentSong = playlist.Songlist.FirstOrDefault();
             this.musicPlayer.Play();
+        }
+
+        private async void  Button_Click(object sender, RoutedEventArgs e)
+        {
+            var path = await Helper.SettingsDialog();
+            if (path != null) {
+                var settings = await DataIO.readSettings();
+                settings.downloadPath = path;
+                await DataIO.saveSettings(settings);
+            }
         }
     }
 }

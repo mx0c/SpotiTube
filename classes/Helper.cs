@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -25,7 +26,7 @@ namespace SpotiTube
         public static async void ErrorDialog(string title, string content) {
             Helper.executeInUiThread(async () =>
             {
-                ContentDialog noWifiDialog = new ContentDialog()
+                ContentDialog dialog = new ContentDialog()
                 {
                     Title = title,
                     Content = content,
@@ -33,7 +34,7 @@ namespace SpotiTube
                 };
                 try
                 {
-                    await noWifiDialog.ShowAsync();
+                    await dialog.ShowAsync();
                 }
                 catch (Exception) { };
             });
@@ -42,28 +43,60 @@ namespace SpotiTube
         public static async Task<string> InputTextDialogAsync(string title, string buttonText, string boxText = "")
         {
             TextBox inputTextBox = new TextBox();
-            inputTextBox.AcceptsReturn = false;
+            inputTextBox.AcceptsReturn = true;
             inputTextBox.Height = 32;
             inputTextBox.Text = boxText;
+
             ContentDialog dialog = new ContentDialog();
             dialog.Content = inputTextBox;
             dialog.Title = title;
             dialog.IsSecondaryButtonEnabled = true;
             dialog.PrimaryButtonText = buttonText;
             dialog.SecondaryButtonText = "Cancel";
+
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                 return inputTextBox.Text;
             else
                 return "";
         }
 
+        public static async Task<string> SettingsDialog()
+        {
+            ContentDialog dialog = new ContentDialog();
+            dialog.Title = "Settings";
+            dialog.Content = "Change download location";
+            dialog.IsSecondaryButtonEnabled = true;
+            dialog.PrimaryButtonText = "Pick Path";
+            dialog.SecondaryButtonText = "Cancel";
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+                folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+                folderPicker.FileTypeFilter.Add("*");
+                Windows.Storage.StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+                if (folder != null)
+                {
+                    Windows.Storage.AccessCache.StorageApplicationPermissions.
+                    FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+                    return folder.Path;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
         public static BitmapImage base64toBmp(String data) {
             byte[] bData = Convert.FromBase64String(data);
             var ims = new InMemoryRandomAccessStream();
             var dataWriter = new DataWriter(ims);
+
             dataWriter.WriteBytes(bData);
             dataWriter.StoreAsync();
             ims.Seek(0);
+
             var img = new BitmapImage();
             img.SetSource(ims);
             return img;

@@ -7,9 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
-using MediaToolkit;
-using VideoLibrary;
-using MediaToolkit.Model;
+using Windows.Storage;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace SpotiTube
 {
@@ -32,9 +31,17 @@ namespace SpotiTube
                 var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(YoutubeClient.ParseVideoId(song.SongURL));
 
                 MediaStreamInfoSet info = await client.GetVideoMediaStreamInfosAsync(YoutubeClient.ParseVideoId(song.SongURL));             
-                var audioStream = info.Audio.OrderBy(s => s.Bitrate).Last();
-                
-                await client.DownloadMediaStreamAsync(audioStream, path + "/" + song.DownloadTitle + ".mp3", progHandler);              
+                var audioStreamInfo = info.Audio.OrderBy(s => s.Bitrate).Last();
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await client.DownloadMediaStreamAsync(audioStreamInfo, memoryStream, progress:progHandler);
+                    byte[] bArray = memoryStream.ToArray();
+
+                    StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(path);
+                    var storageFile = await sf.CreateFileAsync(song.DownloadTitle + ".mp3");
+
+                    await FileIO.WriteBytesAsync(storageFile, bArray);              }           
             }
             catch (Exception e){
                 Console.WriteLine(e.ToString());

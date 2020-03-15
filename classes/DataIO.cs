@@ -62,7 +62,7 @@ namespace SpotiTube
         {
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("playlists.json");
             var newPlaylist = new Playlist();
-            newPlaylist.Title = "new Playlist";
+            newPlaylist.Title = "new playlist";
             ObservableCollection<Playlist> ret = new ObservableCollection<Playlist>();
             ret.Add(newPlaylist);
             String json = JsonConvert.SerializeObject(ret);
