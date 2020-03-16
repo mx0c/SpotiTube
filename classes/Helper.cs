@@ -60,17 +60,8 @@ namespace SpotiTube
                 return "";
         }
 
-        public static async Task<string> SettingsDialog()
+        public static async Task<string> folderPicker()
         {
-            ContentDialog dialog = new ContentDialog();
-            dialog.Title = "Settings";
-            dialog.Content = "Change download location";
-            dialog.IsSecondaryButtonEnabled = true;
-            dialog.PrimaryButtonText = "Pick Path";
-            dialog.SecondaryButtonText = "Cancel";
-
-            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-            {
                 var folderPicker = new Windows.Storage.Pickers.FolderPicker();
                 folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
                 folderPicker.FileTypeFilter.Add("*");
@@ -82,10 +73,7 @@ namespace SpotiTube
                     return folder.Path;
                 }
                 else
-                    return null;
-            }
-            else
-                return null;
+                    return null;    
         }
 
         public static BitmapImage base64toBmp(String data) {
@@ -126,7 +114,7 @@ namespace SpotiTube
                 Ping ping = new Ping();
                 PingReply pr = ping.Send("8.8.8.8", 500);
                 return (pr.Status == IPStatus.Success);
-            }catch(Exception e) {
+            }catch(Exception) {
                 return false;
             }
         }

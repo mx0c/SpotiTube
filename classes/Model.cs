@@ -36,10 +36,12 @@ namespace SpotiTube
             this.duration = duration;
             this.isDownloaded = false;
             this.isDownloading = false;
+            this.downloadPath = null;
             this._downloadProgress = 0;
             this.Thumbnail = thumbnailBase64;
         }
-    
+
+        public String downloadPath { get; set; }
         public String Title { get; set; }
         public String DownloadTitle { get; set; }
         public String SongURL { get; set; }

@@ -7,13 +7,14 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using SpotiTube;
 using Windows.Media.Playback;
-using YoutubeSearch;
+using YouTubeSearch;
 using Windows.ApplicationModel.DataTransfer;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Timers;
 using System.Collections.ObjectModel;
-
+using Helper = SpotiTube.Helper;
+using Windows.UI.Popups;
 
 namespace App1
 {
@@ -130,18 +131,24 @@ namespace App1
             this.musicPlayer.seek(this.TimeSlider.Value);
         }
 
-        private void SearchBar_KeyUp(object sender, KeyRoutedEventArgs e)
+        private async void SearchBar_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 this.searching = true;
                 var items = new VideoSearch();
-                this.songListViewModel.songListObservable.Clear();               
-                foreach (var item in items.SearchQuery(this.SearchBar.Text, 1))
+                this.songListViewModel.songListObservable.Clear();
+
+                LoadingDialog dialog = new LoadingDialog();
+                var t = dialog.ShowAsync();
+
+                var videos = await items.GetVideos(this.SearchBar.Text, 1);
+                foreach (var item in videos)
                 {
-                    var s = new Song(item.Title, item.Url, "none", Helper.ImageURLToBase64(item.Thumbnail), item.Duration);
+                    var s = new Song(item.getTitle(), item.getUrl(), "none", Helper.ImageURLToBase64(item.getThumbnail()), item.getDuration());
                     this.songListViewModel.songListObservable.Add(s);
                 }
+                t.Cancel();
             }
         }
 
@@ -373,6 +380,7 @@ namespace App1
             if (await Downloader.downloadSong(song, progHandler)) {
                 songItem.isDownloaded = true;
                 songItem.isDownloading = false;
+                songItem.downloadPath = (await DataIO.readSettings()).downloadPath;
                 this.selectedPlaylist.Songlist.RemoveAt(i);
                 this.selectedPlaylist.Songlist.Insert(i, songItem);
                 await DataIO.SavePlaylist(this.selectedPlaylist);
@@ -422,14 +430,10 @@ namespace App1
             this.musicPlayer.Play();
         }
 
-        private async void  Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var path = await Helper.SettingsDialog();
-            if (path != null) {
-                var settings = await DataIO.readSettings();
-                settings.downloadPath = path;
-                await DataIO.saveSettings(settings);
-            }
+            var dialog = new SettingsDialog();
+            await dialog.ShowAsync();
         }
     }
 }

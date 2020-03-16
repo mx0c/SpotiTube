@@ -11,6 +11,7 @@
     <Page.Resources>
         <local:BooleanToVisibilityConverter x:Key="boolToVis"/>
         <local:ImageConverter x:Key="ImageConverter"/>
+        <local:BooleanToOpacityConverter x:Key="boolToOpacity"/>
     </Page.Resources>
 
     <Grid>
@@ -150,7 +151,7 @@
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" Padding="10 0 30 0" />
                                 <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding duration}"/>
                                 <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{Binding addedAt}"/>
-                                <TextBlock Grid.Column="7" Visibility="{Binding Path=isDownloaded, Converter={StaticResource boolToVis}}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE896;"/>
+                                <TextBlock Grid.Column="7" Opacity="{Binding Path=isDownloaded, Converter={StaticResource boolToOpacity}}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE896;" />
                                 <ProgressBar Grid.Column="7" Visibility="{Binding Path=isDownloading, Converter={StaticResource boolToVis}}" Value="{Binding downloadProgress}" Minimum="0" Maximum="100"/>
                             </Grid>
                         </DataTemplate>

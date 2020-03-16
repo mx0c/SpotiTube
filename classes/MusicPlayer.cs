@@ -210,8 +210,9 @@ namespace SpotiTube
 
             if (currentSong.isDownloaded)
             {
-                StorageFile sf = await ApplicationData.Current.LocalFolder.GetFileAsync(currentSong.DownloadTitle + ".mp3");
-                this.mPlayer.Source = MediaSource.CreateFromStorageFile(sf);
+                StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(currentSong.downloadPath);
+                var storageFile = await sf.GetFileAsync(currentSong.DownloadTitle + ".mp3");
+                this.mPlayer.Source = MediaSource.CreateFromStorageFile(storageFile);
                 this.mPlayer.Play();
             }
             else

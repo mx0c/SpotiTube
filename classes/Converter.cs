@@ -34,6 +34,33 @@ namespace App1
         }
     }
 
+    public class BooleanToOpacityConverter : IValueConverter
+    {
+        public BooleanToOpacityConverter() { }
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null)
+                return 0.3;
+
+            if (value is bool && (bool)value)
+            {
+                return 1.0;
+            }
+            return 0.3;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            if ((double)value == 1.0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
     public class ImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
