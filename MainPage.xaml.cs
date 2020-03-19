@@ -25,7 +25,7 @@ namespace App1
         private Song draggedSong;
         private Playlist selectedPlaylist;      
         private Timer scrollTimer;
-        private SongListViewModel songListViewModel = new SongListViewModel();
+        private ObservableCollection<Song> songListObservable = new ObservableCollection<Song>();
         private Boolean searching = false;
 
         public MainPage()
@@ -54,8 +54,8 @@ namespace App1
                 Helper.executeInUiThread(() =>
                 {                  
                     this.selectedPlaylist = lists[0];
-                    this.MainListView.ItemsSource =  songListViewModel.songListObservable;
-                    songListViewModel.songListObservable.Clear();
+                    this.MainListView.ItemsSource =  songListObservable;
+                    songListObservable.Clear();
 
                     PlaylistList.Items.Clear();
                     foreach (Playlist pl in lists) {
@@ -67,7 +67,7 @@ namespace App1
                         return;
 
                     foreach (Song s in this.selectedPlaylist.Songlist) {
-                        this.songListViewModel.songListObservable.Add(s);
+                        this.songListObservable.Add(s);
                     }                   
                 });
             }
@@ -137,7 +137,7 @@ namespace App1
             {
                 this.searching = true;
                 var items = new VideoSearch();
-                this.songListViewModel.songListObservable.Clear();
+                this.songListObservable.Clear();
 
                 LoadingDialog dialog = new LoadingDialog();
                 var t = dialog.ShowAsync();
@@ -146,7 +146,7 @@ namespace App1
                 foreach (var item in videos)
                 {
                     var s = new Song(item.getTitle(), item.getUrl(), "none", Helper.ImageURLToBase64(item.getThumbnail()), item.getDuration());
-                    this.songListViewModel.songListObservable.Add(s);
+                    this.songListObservable.Add(s);
                 }
                 t.Cancel();
             }
@@ -173,14 +173,14 @@ namespace App1
             searching = false;
             var playlist = (Playlist)e.ClickedItem;
             this.selectedPlaylist = playlist;
-            this.songListViewModel.songListObservable.Clear();
+            this.songListObservable.Clear();
             
             if (this.selectedPlaylist.Songlist == null)
                 return;
 
             foreach (Song s in this.selectedPlaylist.Songlist)
             {
-                this.songListViewModel.songListObservable.Add(s);
+                this.songListObservable.Add(s);
             }
         }
 
@@ -282,7 +282,7 @@ namespace App1
             var toDelete = (sender as MenuFlyoutItem).DataContext as Song;
             this.selectedPlaylist.Songlist.Remove(toDelete);
             await DataIO.SavePlaylist(this.selectedPlaylist);
-            this.songListViewModel.songListObservable.Remove(toDelete);
+            this.songListObservable.Remove(toDelete);
         }
 
         private void MainListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
@@ -364,16 +364,16 @@ namespace App1
         private async void DownloadSong_Click(object sender, RoutedEventArgs e)
         {
             var song = ((sender as MenuFlyoutItem).DataContext as Song);
-            var songItem = this.songListViewModel.songListObservable.Where(s => s.SongURL == song.SongURL).FirstOrDefault();
+            var songItem = this.songListObservable.Where(s => s.SongURL == song.SongURL).FirstOrDefault();
 
             if (songItem.isDownloaded || songItem.isDownloading)
                 return;
 
-            var i = this.songListViewModel.songListObservable.IndexOf(songItem);
+            var i = this.songListObservable.IndexOf(songItem);
 
             songItem.isDownloading = true;
-            songListViewModel.songListObservable.RemoveAt(i);
-            songListViewModel.songListObservable.Insert(i, songItem);
+            songListObservable.RemoveAt(i);
+            songListObservable.Insert(i, songItem);
 
             var progHandler = new Progress<double>(p => songItem.downloadProgress = p * 100.0);
 
@@ -384,8 +384,8 @@ namespace App1
                 this.selectedPlaylist.Songlist.RemoveAt(i);
                 this.selectedPlaylist.Songlist.Insert(i, songItem);
                 await DataIO.SavePlaylist(this.selectedPlaylist);
-                songListViewModel.songListObservable.RemoveAt(i);
-                songListViewModel.songListObservable.Insert(i, songItem);
+                songListObservable.RemoveAt(i);
+                songListObservable.Insert(i, songItem);
             }
         }
 

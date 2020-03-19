@@ -218,7 +218,7 @@ namespace SpotiTube
                     this.mPlayer.Source = MediaSource.CreateFromStorageFile(storageFile);
                     this.mPlayer.Play();
                 }
-                catch (FileNotFoundException e) {
+                catch (FileNotFoundException) {
                     Helper.ErrorDialog("Song not found!", "File was probably deleted. Please download it again.");
                     var i = currentPlaylist.Songlist.IndexOf(currentSong);
                     currentSong.isDownloaded = false;
@@ -243,7 +243,7 @@ namespace SpotiTube
                 {
                     return;
                 }
-                catch (NullReferenceException e){
+                catch (NullReferenceException){
                     //happens if "video" is not playable for some reason
                     Helper.ErrorDialog("Cant Play this Song","For some reason this song can't be played.");
                     skipSong();
