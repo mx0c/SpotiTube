@@ -41,6 +41,7 @@ namespace SpotiTube
                 settings.downloadPath = path;
                 await DataIO.saveSettings(settings);
             }
+            this.Hide();
         }
     }
 }

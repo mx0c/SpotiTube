@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Shapes;
 using Windows.Storage;
 using Windows.Media;
 using Windows.Storage.Streams;
+using System.IO;
 
 namespace SpotiTube
 {
@@ -210,10 +211,23 @@ namespace SpotiTube
 
             if (currentSong.isDownloaded)
             {
-                StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(currentSong.downloadPath);
-                var storageFile = await sf.GetFileAsync(currentSong.DownloadTitle + ".mp3");
-                this.mPlayer.Source = MediaSource.CreateFromStorageFile(storageFile);
-                this.mPlayer.Play();
+                try
+                {
+                    StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(currentSong.downloadPath);
+                    var storageFile = await sf.GetFileAsync(currentSong.DownloadTitle + ".mp3");
+                    this.mPlayer.Source = MediaSource.CreateFromStorageFile(storageFile);
+                    this.mPlayer.Play();
+                }
+                catch (FileNotFoundException e) {
+                    Helper.ErrorDialog("Song not found!", "File was probably deleted. Please download it again.");
+                    var i = currentPlaylist.Songlist.IndexOf(currentSong);
+                    currentSong.isDownloaded = false;
+                    currentPlaylist.Songlist.RemoveAt(i);
+                    currentPlaylist.Songlist.Insert(i, currentSong);
+                    await DataIO.SavePlaylist(currentPlaylist);
+                    skipSong();
+                    return;
+                }
             }
             else
             {
