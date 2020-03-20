@@ -80,7 +80,15 @@ namespace SpotiTube
     public class Playlist
     {
         public String Title { get; set; }
+        public bool IsDownloaded { get; set; }
+        public double DownloadProgress { get; set; }
         public ObservableCollection<Song> Songlist { get; set; }
+
+        public Playlist(string name) {
+            Title = name;
+            IsDownloaded = false;
+            DownloadProgress = 0.0;
+        }
     }
 
     class Setting

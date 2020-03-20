@@ -14,12 +14,26 @@ namespace SpotiTube
 {
     public static class Downloader
     {
-        //public static async void downloadPlaylist(Playlist plist) {
-        //    foreach (Song s in plist.Songlist) {
-        //        await downloadSong(s);
-        //        ((Song)plist.Songlist.Where(song => song.SongURL == s.SongURL)).isDownloaded = true;
-        //    }
-        //}
+        public static async void downloadPlaylist(Playlist plist) {
+            var songCount = plist.Songlist.Count;
+            int songsFinished = 0;
+            foreach (Song s in plist.Songlist) {
+                if (!s.isDownloaded)
+                {
+                    var i = plist.Songlist.IndexOf(s);
+                    await downloadSong(s, null);
+                    var songTmp = ((Song)plist.Songlist.Where(song => song.SongURL == s.SongURL));
+                    songTmp.isDownloaded = true;
+                    songTmp.isDownloading = false;
+                    songTmp.downloadPath = (await DataIO.readSettings()).downloadPath;
+                    plist.Songlist.RemoveAt(i);
+                    plist.Songlist.Insert(i, songTmp);
+                    await DataIO.SavePlaylist(plist);
+                }
+                songsFinished++;
+                plist.DownloadProgress = songsFinished / songCount;
+            }
+        }
 
         public static async Task<Boolean> downloadSong(Song song, Progress<double> progHandler) {
             try
@@ -35,7 +49,10 @@ namespace SpotiTube
 
                 using (var memoryStream = new MemoryStream())
                 {
-                    await client.DownloadMediaStreamAsync(audioStreamInfo, memoryStream, progress:progHandler);
+                    if(progHandler != null)
+                        await client.DownloadMediaStreamAsync(audioStreamInfo, memoryStream, progress:progHandler);
+                    else
+                        await client.DownloadMediaStreamAsync(audioStreamInfo, memoryStream);
                     byte[] bArray = memoryStream.ToArray();
 
                     StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(path);
@@ -43,8 +60,7 @@ namespace SpotiTube
 
                     await FileIO.WriteBytesAsync(storageFile, bArray);              }           
             }
-            catch (Exception e){
-                Console.WriteLine(e.ToString());
+            catch (Exception){
                 return false;
             }
             return true;

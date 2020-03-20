@@ -7,11 +7,14 @@ using Newtonsoft.Json;
 using System.IO;
 using Windows.Storage;
 using System.Collections.ObjectModel;
+using Nito.AsyncEx;
 
 namespace SpotiTube
 {
     static class DataIO
     {
+        private static readonly AsyncLock _mutex = new AsyncLock();
+
         public async static Task<Setting> readSettings() {
             StorageFile file;
             try
@@ -49,13 +52,17 @@ namespace SpotiTube
             {
                 file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
             }
-            catch (FileNotFoundException) {
-                return (await createPlaylist());
+            catch (FileNotFoundException)
+            {
+                return await createPlaylist();
             }
-            var content = await FileIO.ReadTextAsync(file);
-            var jArr = (Newtonsoft.Json.Linq.JArray)JsonConvert.DeserializeObject(content);
-            ObservableCollection<Playlist> playlists = jArr.ToObject<ObservableCollection<Playlist>>();
-            return playlists;
+            using (await _mutex.LockAsync())
+            {
+                var content = await FileIO.ReadTextAsync(file);
+                var jArr = (Newtonsoft.Json.Linq.JArray)JsonConvert.DeserializeObject(content);
+                ObservableCollection<Playlist> playlists = jArr.ToObject<ObservableCollection<Playlist>>();
+                return playlists;
+            }
         }
 
         private static async Task<ObservableCollection<Playlist>> createPlaylist()
@@ -98,7 +105,10 @@ namespace SpotiTube
 
             String json = JsonConvert.SerializeObject(allPlayLists);
             var file = await ApplicationData.Current.LocalFolder.GetFileAsync("playlists.json");
-            await FileIO.WriteTextAsync(file, json);
+            using (await _mutex.LockAsync())
+            {
+                await FileIO.WriteTextAsync(file, json);
+            }
         }        
     }
 }

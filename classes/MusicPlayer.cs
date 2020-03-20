@@ -226,6 +226,7 @@ namespace SpotiTube
                     currentPlaylist.Songlist.Insert(i, currentSong);
                     await DataIO.SavePlaylist(currentPlaylist);
                     skipSong();
+                    //TODO: update UI
                     return;
                 }
             }

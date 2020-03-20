@@ -162,7 +162,7 @@ namespace App1
             String plName = await Helper.InputTextDialogAsync("Playlist name", "Add");
             if (plName == "")
                 return;
-            var npl = new Playlist { Title = plName };
+            var npl = new Playlist(plName);
             await DataIO.SavePlaylist(npl);
             this.PlaylistList.Items.Clear();
             this.loadPlaylists();
@@ -324,7 +324,8 @@ namespace App1
 
         private void DownloadPlaylist_Click(object sender, RoutedEventArgs e)
         {
-
+            var playlist = e.OriginalSource as Playlist;
+            Downloader.downloadPlaylist(playlist);
         }
 
         private void Scrollviewer_Loaded(object sender, RoutedEventArgs e)
