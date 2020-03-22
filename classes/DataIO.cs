@@ -68,7 +68,7 @@ namespace SpotiTube
         private static async Task<ObservableCollection<Playlist>> createPlaylist()
         {
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("playlists.json");
-            var newPlaylist = new Playlist();
+            var newPlaylist = new Playlist("new playlist");
             newPlaylist.Title = "new playlist";
             ObservableCollection<Playlist> ret = new ObservableCollection<Playlist>();
             ret.Add(newPlaylist);

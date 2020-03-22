@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -60,6 +62,15 @@ namespace SpotiTube
                 return "";
         }
 
+        public static async Task<Boolean> ButtonDialog(string content) {
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = content;
+            dialog.IsSecondaryButtonEnabled = false;
+            dialog.PrimaryButtonText = "OK";
+            await dialog.ShowAsync();
+            return true;
+        }
+
         public static async Task<string> folderPicker()
         {
                 var folderPicker = new Windows.Storage.Pickers.FolderPicker();
@@ -74,6 +85,14 @@ namespace SpotiTube
                 }
                 else
                     return null;    
+        }
+
+        public static async Task<StorageFile> filePicker() {
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+            openPicker.FileTypeFilter.Add("*");
+            return await openPicker.PickSingleFileAsync();
         }
 
         public static BitmapImage base64toBmp(String data) {

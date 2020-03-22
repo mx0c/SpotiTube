@@ -18,13 +18,16 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        
         <TextBlock Grid.Column="0" Grid.Row="0" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center">•</TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10">Change Download Location</TextBlock>
-        <Button Grid.Column="2" Grid.Row="0" Click="Button_Click_2">Location</Button>
+        <Button Margin="3" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="0" Click="Button_Click_2">Pick Location</Button>
         <TextBlock Grid.Column="0" Grid.Row="1" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center">•</TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10">Backup Playlists</TextBlock>
-        <Button Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Click="Button_Click_1">Backup</Button>
-        <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Margin="0 10 0 0" Click="Button_Click">Cancel</Button>
+        <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10">Export/Import Backup</TextBlock>
+        <Button Margin="3" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Click="Button_Click_1">Export</Button>
+        <Button Margin="3" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Click="Button_Click_3">Import</Button>
+        <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Margin="0 10 0 0" Click="Button_Click">Cancel</Button>
     </Grid>
 </ContentDialog>
