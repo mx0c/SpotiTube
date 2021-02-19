@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Timers;
 using System.Collections.ObjectModel;
 using Helper = SpotiTube.Helper;
-using Windows.UI.Popups;
 
 namespace App1
 {

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
-using YoutubeExplode.Models.MediaStreams;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.UI.Xaml.Controls;
@@ -143,10 +142,14 @@ namespace SpotiTube
         public async Task<String> GetAudioStream(String youtubeURL)
         {
             var client = new YoutubeClient();
-            var converter = new YoutubeConverter(client);
-            var mediaStreamInfoSet = await client.GetVideoMediaStreamInfosAsync(youtubeURL.Split('=')[1]);
-            var audioStreamInfo = mediaStreamInfoSet.Audio.WithHighestBitrate();
-            return audioStreamInfo.Url;
+
+            // Get stream manifest
+            var manifest = await client.Videos.Streams.GetManifestAsync(youtubeURL);
+
+            // Get Audio stream with highest Bitrate
+            var streamInfo = manifest.GetAudioOnly().OrderByDescending(x => x.Bitrate).FirstOrDefault();
+
+            return streamInfo.Url;
         }
 
         public void skipSong(bool direction = true)
