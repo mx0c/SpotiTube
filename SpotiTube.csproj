@@ -234,7 +234,7 @@
       <Version>5.1.2</Version>
     </PackageReference>
     <PackageReference Include="VideoLibrary">
-      <Version>3.1.6</Version>
+      <Version>3.2.2</Version>
     </PackageReference>
     <PackageReference Include="YoutubeExplode">
       <Version>6.2.2</Version>
