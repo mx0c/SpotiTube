@@ -237,7 +237,7 @@
       <Version>3.1.6</Version>
     </PackageReference>
     <PackageReference Include="YoutubeExplode">
-      <Version>6.1.2</Version>
+      <Version>6.2.2</Version>
     </PackageReference>
     <PackageReference Include="YoutubeExplode.Converter">
       <Version>6.1.2</Version>
