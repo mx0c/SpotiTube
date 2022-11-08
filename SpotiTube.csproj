@@ -240,7 +240,7 @@
       <Version>6.2.2</Version>
     </PackageReference>
     <PackageReference Include="YoutubeExplode.Converter">
-      <Version>6.2.2</Version>
+      <Version>6.2.4</Version>
     </PackageReference>
     <PackageReference Include="YouTubeSearch">
       <Version>2.2.6</Version>
